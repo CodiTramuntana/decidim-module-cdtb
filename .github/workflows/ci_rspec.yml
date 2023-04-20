@@ -1,0 +1,88 @@
+name: "[CI] RSpec"
+
+on:
+  push:
+    branches:
+      - main
+      - release/*
+      - "*-stable"
+
+  pull_request:
+
+env:
+  RUBY_VERSION: 2.7.5
+  NODE_VERSION: 16.9.1
+  CI: "true"
+
+jobs:
+  test-app:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    name: RSpec tests
+    strategy:
+      matrix:
+        ruby:
+          - '2.7.5'
+    services:
+      postgres:
+        image: postgres:11
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: postgres
+    env:
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      RUBYOPT: '-W:no-deprecated'
+    steps:
+      - uses: actions/checkout@v2.0.0
+        with:
+          fetch-depth: 1
+
+      - uses: ruby/setup-ruby@master
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+
+      # - uses: actions/setup-node@v2
+      #   with:
+      #     node-version: ${{ env.NODE_VERSION }}
+      #     cache: 'npm'
+      # - run: npm install
+
+      - name: Recover Ruby dependency cache
+        uses: actions/cache@v3
+        with:
+          path: ./vendor/bundle
+          key: ${{ runner.OS }}-rubydeps-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-rubydeps-${{ env.cache-name }}-
+            ${{ runner.OS }}-rubydeps-
+            ${{ runner.OS }}-
+
+      - name: Set bundle local config configvendor/bundle path
+        run: bundle config set --local path 'vendor/bundle'
+
+      - name: Install Ruby deps
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_on: error
+          command: bundle install --jobs 4 --retry 3
+
+      - name: Generate test_app
+        run: |
+          bin/rails decidim:generate_external_test_app
+
+      - name: Run RSpec
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_on: error
+          command: CI=1 bundle exec rspec --backtrace

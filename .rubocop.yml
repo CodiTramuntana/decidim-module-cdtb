@@ -1,0 +1,32 @@
+AllCops:
+  TargetRubyVersion: 2.7
+  NewCops: enable
+  Exclude:
+    - bin/*
+    - "**/vendor/**/*"
+    - db/schema.rb
+    - db/migrate/*
+    - "node_modules/**/*"
+    - "spec/decidim_dummy_app/**/*"
+
+Metrics/BlockLength:
+  Enabled: true
+  Max: 30
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Style/StringLiteralsInInterpolation:
+  Enabled: true
+  EnforcedStyle: double_quotes
+
+Layout/LineLength:
+  Max: 120
+
+Layout/SpaceAroundOperators:
+  Enabled: false
+  # When true, allows most uses of extra spacing if the intent is to align
+  # with an operator on the previous or next line, not counting empty lines
+  # or comment lines.
+  AllowForAlignment: true
