@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 #
-# A set of utils to manage DiBa organizations.
+# A set of utils to manage Decidim Organizations.
 #
 namespace :cdtb do
   require_relative "cdtb_tasks_utils"

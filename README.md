@@ -48,6 +48,23 @@ To execute the task run:
 bin/rake cdtb:fix_nicknames
 ```
 
+#### Migrate ActiveStorage service from S3 to local
+
+To migrate from S3 to local storage, the identified steps will be:
+
+1. Download the assets to a temporary directory:
+    `aws s3 sync s3://bucket-name tmp/storage/`
+2. Move the downloaded assets into the local storage directory doing the sarding:
+    `bin/rake cdtb:s3_to_local:do_sharding`
+3. Update all blobs to use the local service
+    `bin/rake cdtb:s3_to_local:set_local_service_on_blobs`
+4. Clean the cache:
+    `bin/rake cache:clear`
+5. Restart the Rails server
+
+
+
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
