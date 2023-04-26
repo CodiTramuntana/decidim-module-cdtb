@@ -20,6 +20,9 @@ Metrics/MethodLength:
   Max: 15
   Enabled: false
 
+Naming/PredicateName:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: true
   EnforcedStyle: double_quotes

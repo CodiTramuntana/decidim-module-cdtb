@@ -4,8 +4,8 @@
 # A set of utils to migrate from one storage service to another.
 #
 namespace :cdtb do
-  require_relative "cdtb_tasks_utils"
-  include Cdtb::TasksUtils
+  require "decidim/cdtb/tasks_utils"
+  include ::Decidim::Cdtb::TasksUtils
   require "decidim/cdtb/storage/local_sharding"
 
   # To migrate from S3 to local storage.
@@ -21,35 +21,16 @@ namespace :cdtb do
       This step is required because in S3 all assets are stored at the same level (directory), but local service stores the files with sharding.
     EODESC
     task do_sharding: [:environment] do
-      log_task_title("S3 to local: DO SHARDING")
-      prepare_task
-      local_sharding= Decidim::Cdtb::Storage::LocalSharding.new
-      num_blobs= ActiveStorage::Blob.count
-
-      log_task_info("Checking #{num_blobs} blobs...")
-      log_start_steps(total: num_blobs, title: "ActiveStorage::Blobs") do |progress_bar|
-        local_sharding.perform!(progress_bar)
-      end
-
-      log_task_info("#{local_sharding.num_moved} blobs sharded")
-      log_task_end
+      task= Decidim::Cdtb::Storage::LocalSharding.new
+      task.execute!
     end
 
     desc <<~EODESC
       Updates all ActiveStorage::Blob rows in the DB to use the :local service.
     EODESC
     task set_local_service_on_blobs: [:environment] do
-      log_task_title("S3 to local: FORCE LOCAL SERVICE")
-      prepare_task
-      num_blobs= ActiveStorage::Blob.count
-
-      log_task_info("Updating #{num_blobs} blobs...")
-      log_start_steps(total: num_blobs, title: "ActiveStorage::Blobs") do |_progress_bar|
-        ActiveStorage::Blob.update(service_name: "local")
-      end
-
-      log_task_info("Blobs updated")
-      log_task_end
+      task= Decidim::Cdtb::Storage::SetLocalOnBlobs.new
+      task.execute!
     end
   end
 end

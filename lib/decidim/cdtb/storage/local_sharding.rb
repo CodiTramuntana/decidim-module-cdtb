@@ -8,25 +8,39 @@ module Decidim
       #
       # This step is required because in S3 all assets are stored flat at the same level (directory),
       # but local service stores the files with sharding.
-      class LocalSharding
+      class LocalSharding < ::Decidim::Cdtb::Task
         def initialize
-          @num_moved = 0
+          progress_bar= { title: "ActiveStorage::Blob" }
+          super("S3 to local: DO SHARDING", progress_bar: progress_bar)
         end
 
-        attr_reader :num_moved
+        def prepare_execution(_ctx)
+          @num_blobs= ActiveStorage::Blob.count
+          log_task_info("Checking #{@num_blobs} blobs...")
+        end
 
-        def perform!(progress_bar)
+        def total_items
+          @num_blobs
+        end
+
+        def do_execution(context)
+          progress_bar= context[:progress_bar]
+
           ActiveStorage::Blob.find_each do |blob|
             path= ActiveStorage::Blob.service.path_for(blob.key)
             src_file= Rails.root.join("tmp/storage", blob.key)
             if File.exist?(src_file)
               shard_asset(blob, path)
-              @num_moved+= 1
+              @num_applied+= 1
             else
               logger.warn "File Not Found or directory: #{path}"
             end
             progress_bar.increment
           end
+        end
+
+        def end_execution(_ctx)
+          log_task_info("#{@num_applied} blobs sharded")
         end
 
         #----------------------------------------------------------------
