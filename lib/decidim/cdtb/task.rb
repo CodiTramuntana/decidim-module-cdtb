@@ -46,13 +46,13 @@ module Decidim
 
       #################################
 
-      # May be used by sublasses for preparing before executing the task
+      # May be used by subclasses for preparing before executing the task
       def prepare_execution(context); end
 
-      # Sublasses must implement the steps of the task overriding this method.
+      # Subclasses must implement the steps of the task overriding this method.
       def do_execution(context); end
 
-      # May be used by sublasses for doing whatever after executing the task
+      # May be used by subclasses for doing whatever after executing the task
       def end_execution(context); end
 
       def has_progress?
