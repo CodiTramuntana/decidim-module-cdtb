@@ -12,6 +12,16 @@ AllCops:
 Metrics/BlockLength:
   Enabled: true
   Max: 30
+  Exclude:
+    - lib/tasks/*.rake
+
+Metrics/MethodLength:
+  CountComments: false
+  Max: 15
+  Enabled: false
+
+Naming/PredicateName:
+  Enabled: false
 
 Style/StringLiterals:
   Enabled: true
