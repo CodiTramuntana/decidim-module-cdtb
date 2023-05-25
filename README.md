@@ -48,6 +48,26 @@ To execute the task run:
 bin/rake cdtb:fix_nicknames
 ```
 
+#### Anonymize production dump
+
+Anonymize rake task was taken from https://github.com/AjuntamentdeBarcelona/decidim-barcelona
+
+Available rake tasks:
+
+```cdtb:anonymize:check``` allows you to check if you can anonymize production dump
+
+```cdtb:anonymize:all``` anonymizes whole production dump (without proposals)
+
+```cdtb:anonymize:users``` anonymizes users
+
+```cdtb:anonymize:proposals``` anonymizes proposals
+
+```cdtb:anonymize:user_groups``` anonymizes user groups
+
+```cdtb:anonymize:system_admins``` anonymizes system admins
+
+```cdtb:anonymize:paper_trail``` anonymizes paper trails
+
 #### Migrate ActiveStorage service from S3 to local
 
 To migrate from S3 to local storage, the identified steps will be:
