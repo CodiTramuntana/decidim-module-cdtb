@@ -67,6 +67,8 @@ namespace :cdtb do
           avatar: nil
         )
 
+        user.update_columns(extra: {}) if user.attributes["extra"].present?
+
         user.identities.find_each do |identity|
           identity.update_columns(uid: "anonymized-identity-#{identity.id}")
         end
@@ -100,6 +102,8 @@ namespace :cdtb do
                                                           "document-#{user_group.id}"
                                                         })
         )
+
+        user_group.update_columns(extra: {}) if user_group.attributes["extra"].present?
       end
     end
 
