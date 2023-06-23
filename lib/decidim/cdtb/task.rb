@@ -22,7 +22,7 @@ module Decidim
       def init
         log_task_title(@title)
         @start_time= Time.zone.now
-        do_log("▶️  Starting at #{@start_time}")
+        do_log_info("▶️  Starting at #{@start_time}")
       end
 
       def execute!
@@ -36,7 +36,7 @@ module Decidim
       end
 
       def finish
-        do_log("⏱️  Took #{Time.zone.now - @start_time} seconds")
+        do_log_info("⏱️  Took #{Time.zone.now - @start_time} seconds")
         log_task_end
       end
 

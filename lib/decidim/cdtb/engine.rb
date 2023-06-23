@@ -2,7 +2,7 @@
 
 module Decidim
   module Cdtb
-    # Census have no public app (see AdminEngine)
+    # This module's engine
     class Engine < ::Rails::Engine
       isolate_namespace Decidim::Cdtb
 

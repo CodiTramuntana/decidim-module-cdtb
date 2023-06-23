@@ -1,0 +1,8 @@
+Description:
+    Installs a GitHub workflow to validate that all migrations from all engines have been installed
+
+Example:
+    rails generate validate_migrations
+
+    This will create:
+        .github/workflows/validate_migrations.yml

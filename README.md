@@ -8,10 +8,12 @@ This is CodiTramuntana's Decidim Toolbelt (cdtb), a gem to help managing Decidim
 Install the gem and add to the application's Gemfile by executing:
 
     $ bundle add decidim-cdtb
+    $ bundle install
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+Install CI tests on your app with:
 
-    $ gem install decidim-cdtb
+    $ bin/rails generate cdtb:validate_migrations_ci
+
 
 ## Usage
 
@@ -54,19 +56,13 @@ Anonymize rake task was taken from https://github.com/AjuntamentdeBarcelona/deci
 
 Available rake tasks:
 
-```bin/rake cdtb:anonymize:check``` allows you to check if you can anonymize production dump
-
-```bin/rake cdtb:anonymize:all``` anonymizes whole production dump (without proposals)
-
-```bin/rake cdtb:anonymize:users``` anonymizes users
-
-```bin/rake cdtb:anonymize:proposals``` anonymizes proposals
-
-```bin/rake cdtb:anonymize:user_groups``` anonymizes user groups
-
-```bin/rake cdtb:anonymize:system_admins``` anonymizes system admins
-
-```bin/rake cdtb:anonymize:paper_trail``` anonymizes paper trails
+- `bin/rake cdtb:anonymize:check` allows you to check if you can anonymize production dump
+- `bin/rake cdtb:anonymize:all` anonymizes whole production dump (without proposals)
+- `bin/rake cdtb:anonymize:users` anonymizes users
+- `bin/rake cdtb:anonymize:proposals` anonymizes proposals
+- `bin/rake cdtb:anonymize:user_groups` anonymizes user groups
+- `bin/rake cdtb:anonymize:system_admins` anonymizes system admins
+- `bin/rake cdtb:anonymize:paper_trail` anonymizes paper trails
 
 #### Migrate ActiveStorage service from S3 to local
 
@@ -81,6 +77,22 @@ To migrate from S3 to local storage, the identified steps will be:
 4. Clean the cache:
     `bin/rake cache:clear`
 5. Restart the Rails server
+
+#### Upgrades: Upgrade modules
+
+Upgrades the gems with engines in them. All, Decidim modules and standard Rails engines.
+
+TO-DO To be finished
+
+#### Upgrades: Validate migrations
+
+Validates that migrations from all gems in the Gemfile have already been installed.
+
+```
+bin/rake cdtb:upgrades:validate_migrations
+```
+
+See the [Installation](#installation) chapter to install a GitHub Action on your app that will run this validation on your CI.
 
 ## Development
 
@@ -107,7 +119,7 @@ bundle exec rspec spec
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/decidim-cdtb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/decidim-cdtb/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/CodiTramuntana/decidim-cdtb. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/CodiTramuntana/decidim-cdtb/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -115,4 +127,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Decidim::Cdtb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/decidim-cdtb/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Decidim::Cdtb project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/CodiTramuntana/decidim-cdtb/blob/master/CODE_OF_CONDUCT.md).

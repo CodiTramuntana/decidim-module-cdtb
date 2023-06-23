@@ -1,6 +1,10 @@
 ## [Unreleased]
 
-## [0.1.2] - 2023-06-02
+## [0.1.3] - 2023-06-23 (Tan iguals com especials)
+
+- Validate migrations task
+
+## [0.1.2] - 2023-06-02 (Empastifada amb melmelada)
 
 - Add anonymize rake task
 
