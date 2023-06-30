@@ -17,9 +17,7 @@ Install CI tests on your app with:
 
 ## Usage
 
-### Rake tasks
-
-#### Organizations information
+### Organizations information
 
 Returns information regarding the organizations in a multitenant installation that match a search term ignorecase.
 
@@ -38,7 +36,7 @@ bin/rake cdtb:org_by_host_like[vila]
 host: localhost, time_zone: Madrid, locales: ca + [ca, es, oc], available authorizations: [postal_letter, members_picker_authorization_handler]
 ```
 
-#### Fix nicknames
+### Fix nicknames
 
 In a previous version than Decidim v0.25 a validation to the `Decidim::User.nickname` was added with a migration to fix existing nicknames. But the migration was only taking into acocunt managed (impersonated) users.
 
@@ -50,7 +48,7 @@ To execute the task run:
 bin/rake cdtb:fix_nicknames
 ```
 
-#### Anonymize production dump
+### Anonymize production dump
 
 Anonymize rake task was taken from https://github.com/AjuntamentdeBarcelona/decidim-barcelona
 
@@ -64,7 +62,7 @@ Available rake tasks:
 - `bin/rake cdtb:anonymize:system_admins` anonymizes system admins
 - `bin/rake cdtb:anonymize:paper_trail` anonymizes paper trails
 
-#### Migrate ActiveStorage service from S3 to local
+### Migrate ActiveStorage service from S3 to local
 
 To migrate from S3 to local storage, the identified steps will be:
 
@@ -78,13 +76,15 @@ To migrate from S3 to local storage, the identified steps will be:
     `bin/rake cache:clear`
 5. Restart the Rails server
 
-#### Upgrades: Upgrade modules
+### Upgrades:
+
+#### Upgrade modules
 
 Upgrades the gems with engines in them. All, Decidim modules and standard Rails engines.
 
 TO-DO To be finished
 
-#### Upgrades: Validate migrations
+#### Validate migrations
 
 Validates that migrations from all gems in the Gemfile have already been installed.
 
