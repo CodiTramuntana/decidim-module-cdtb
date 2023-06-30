@@ -28,8 +28,8 @@ module Decidim
       def execute!
         init
         ctx= {}
-        ctx[:progress_bar]= ProgressBar.create(total: total_items, title: title) if has_progress?
         prepare_execution(ctx)
+        ctx[:progress_bar]= ProgressBar.create(total: total_items, title: title) if has_progress?
         do_execution(ctx)
         end_execution(ctx)
         finish

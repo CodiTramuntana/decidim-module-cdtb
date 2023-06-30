@@ -1,38 +1,39 @@
 # frozen_string_literal: true
 
+require_relative "install_gem_migrations_step"
+
 module Decidim
   module Cdtb
     module Upgrades
       # Validates that all Decidim modules have the migrations installed.
       #
       class ValidateMigrationsTask < ::Decidim::Cdtb::Task
+        STEPS_IN_DO_EXECUTION= 2
+
         def initialize
           progress_bar= { title: "Modules" }
           super("VALIDATE MODULES MIGRATIONS", progress_bar: progress_bar)
         end
 
         def prepare_execution(_ctx)
-          log_task_info("Searching gems...")
-
           all_railties= Rails.application.migration_railties
           railties_w_migrations= all_railties.select do |railtie|
             railtie.respond_to?(:paths) && railtie.paths["db/migrate"].first.present?
           end
           @gem_names= railties_w_migrations.map(&:railtie_name)
 
-          log_task_info("Found #{@gem_names.size} gems with migrations...")
+          log_task_info("Found #{@gem_names.size} gems with migrations. Validating.....")
         end
 
         def total_items
-          2
+          STEPS_IN_DO_EXECUTION
         end
 
         def pending_migrations?
-          @pending_migrations
+          @pending_migrations.present?
         end
 
         def do_execution(context)
-          log_task_step("Validating...")
           progress_bar= context[:progress_bar]
 
           output= install_gem_migrations
@@ -46,13 +47,12 @@ module Decidim
 
         def end_execution(_ctx)
           log_task_step("#{@gem_names.size} gems validated")
-          log_task_failure(@pending_migrations.join("\n")) if @pending_migrations
+          log_task_failure(@pending_migrations.join("\n")) if pending_migrations?
         end
 
         def install_gem_migrations
-          cmd= "#{Rails.root.join("bin/rails")} railties:install:migrations"
-          env_vars= "FROM=#{@gem_names.join(",")}"
-          `#{cmd} #{env_vars}`
+          install_step= InstallGemMigrationsStep.new
+          install_step.install!(@gem_names)
         end
       end
     end
