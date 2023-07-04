@@ -94,6 +94,8 @@ bin/rake cdtb:upgrades:validate_migrations
 
 See the [Installation](#installation) chapter to install a GitHub Action on your app that will run this validation on your CI.
 
+TO-DO also check that all migrations have been executed and the schema.rb does not change
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
