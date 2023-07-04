@@ -5,7 +5,7 @@ module Decidim
     module Upgrades
       # Invokes rails to install gem migrations
       #
-      class InstallGemMigrationsStep < ::Decidim::Cdtb::Task
+      class InstallGemMigrationsStep
         # Pass +gem_names+ to define from which gems to install migrations.
         def install!(gem_names)
           cmd= "#{Rails.root.join("bin/rails")} railties:install:migrations"
