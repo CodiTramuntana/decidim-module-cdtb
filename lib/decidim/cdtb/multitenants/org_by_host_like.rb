@@ -30,9 +30,9 @@ module Decidim
                 locales: "#{org.default_locale} + [#{org.available_locales&.join(", ")}]",
                 available_authorizations: org.available_authorizations&.join(", ")
               }
-              do_log(h.to_yaml)
+              do_log_info(h.to_yaml)
             end
-            do_log("---------------------------------------------------------")
+            do_log_info("---------------------------------------------------------")
           end
         end
 
@@ -47,7 +47,7 @@ module Decidim
         end
 
         def show_full_info(org)
-          do_log(org.attributes.to_yaml)
+          do_log_info(org.attributes.to_yaml)
         end
 
         def show_summary_info(org)
@@ -57,7 +57,7 @@ module Decidim
             locales: "#{org.default_locale} + [#{org.available_locales&.join(", ")}]",
             available_authorizations: org.available_authorizations&.join(", ")
           }
-          do_log(h.to_yaml)
+          do_log_info(h.to_yaml)
         end
       end
     end
