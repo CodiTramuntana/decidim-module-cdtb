@@ -81,7 +81,8 @@ module Decidim
 
         def has_spam_word?(user)
           DEFAULT_SPAM_WORDS.any? do |word|
-            user.name.include?(word) || user.about&.include?(word) || user.nickname.include?(word) || user.personal_url&.include?(word)
+            user.name.include?(word) || user.about&.include?(word) ||
+              user.nickname.include?(word) || user.personal_url&.include?(word)
           end
         end
 

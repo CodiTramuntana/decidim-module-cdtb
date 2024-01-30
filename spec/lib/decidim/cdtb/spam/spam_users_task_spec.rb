@@ -17,7 +17,10 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
     end
 
     context "when the user is spam suspicious" do
-      let!(:user) { create :user, nickname: "casinoFree", name: "casinoManager", about: "I love free games", personal_url: "casinofree.com" }
+      let!(:user) do
+        create :user, nickname: "casinoFree", name: "casinoManager",
+                      about: "I love free games", personal_url: "casinofree.com"
+      end
 
       it "returns true" do
         expect(subject.spam_user?(user)).to be true
