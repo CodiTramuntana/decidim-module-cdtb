@@ -76,6 +76,19 @@ To migrate from S3 to local storage, the identified steps will be:
     `bin/rake cache:clear`
 5. Restart the Rails server
 
+### Detect spam
+
+To detect spam in Decidim.
+
+#### Detect spam users
+This rake task export a .csv with a list of suspicious users.
+
+- `bin/rake cdtb:spam:users[host]`
+
+Examples:
+`bin/rake cdtb:spam:users[boi]` --> find users in organization with "boi" string in the host name.
+`bin/rake cdtb:spam:users` --> find all users in all organizations.
+
 ### Upgrades:
 
 #### Upgrade modules
