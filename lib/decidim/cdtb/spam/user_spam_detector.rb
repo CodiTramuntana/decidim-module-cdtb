@@ -8,7 +8,7 @@ module Decidim
       # Detect spam behavior in users
       #
       class UserSpamDetector < ::Decidim::Cdtb::Task
-        DEFAULT_SPAM_WORDS = %w[viagra sex games free crypto].freeze
+        DEFAULT_SPAM_WORDS = %w[viagra sex game free crypto crack xxx luck girls vip download].freeze
 
         def initialize(host = nil)
           @host = host
@@ -68,13 +68,16 @@ module Decidim
         private
 
         def export_users_to_csv
-          headers = ["ID", "Name", "Email", "Nickname", "Personal URL", "About"]
+          headers = ["Name", "Email", "Nickname", "Is suspicious?"]
 
           CSV.open("spam_users.csv", "w") do |csv|
             csv << headers
 
-            @suspicious_users.each do |user|
-              csv << [user.id, user.name, user.email, user.nickname, user.personal_url, user.about]
+            suspicious_emails = @suspicious_users.pluck(:email)
+
+            @users.each do |user|
+              suspicious = suspicious_emails.include?(user.email) ? "✅" : "❌"
+              csv << [user.name, user.email, user.nickname, suspicious]
             end
           end
         end
