@@ -89,6 +89,12 @@ Examples:
 `bin/rake cdtb:spam:users[org_id]` --> find users in organization with an id.
 `bin/rake cdtb:spam:users` --> find all users in all organizations.
 
+To set custom words in the rake, you can override it with an initalizer:
+
+Decidim::Cdtb::Spam::UserSpamDetector.configure do |config|
+  config.spam_words = %w[word1 word2]
+end
+
 ### Upgrades:
 
 #### Upgrade modules

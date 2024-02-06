@@ -8,7 +8,9 @@ module Decidim
       # Detect spam behavior in users
       #
       class UserSpamDetector < ::Decidim::Cdtb::Task
-        DEFAULT_SPAM_WORDS = %w[viagra sex game free crypto crack xxx luck girls vip download].freeze
+        include ActiveSupport::Configurable
+
+        config_accessor :spam_words
 
         def initialize(organization = nil)
           @organization = organization
@@ -69,7 +71,7 @@ module Decidim
         private
 
         def has_spam_word?(user)
-          DEFAULT_SPAM_WORDS.any? do |word|
+          spam_words.any? do |word|
             user.name.include?(word) || user.about&.include?(word) ||
               user.nickname.include?(word) || user.personal_url&.include?(word)
           end
