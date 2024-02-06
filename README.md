@@ -83,10 +83,10 @@ To detect spam in Decidim.
 #### Detect spam users
 This rake task export a .csv with a list of suspicious users.
 
-- `bin/rake cdtb:spam:users[host]`
+- `bin/rake cdtb:spam:users[org_id]`
 
 Examples:
-`bin/rake cdtb:spam:users[boi]` --> find users in organization with "boi" string in the host name.
+`bin/rake cdtb:spam:users[org_id]` --> find users in organization with an id.
 `bin/rake cdtb:spam:users` --> find all users in all organizations.
 
 ### Upgrades:
