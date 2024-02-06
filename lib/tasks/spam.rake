@@ -4,7 +4,7 @@ namespace :cdtb do
   namespace :spam do
     desc "Show a list with users suspected of spam"
     task :users, %i[org_id] => :environment do |_task, args|
-      organization = Decidim::Organization.find(args.org_id)
+      organization = args.org_id.present? ? Decidim::Organization.find(args.org_id) : Decidim::Organization.all
 
       detector = ::Decidim::Cdtb::Spam::UserSpamDetector.new(organization)
       detector.execute!

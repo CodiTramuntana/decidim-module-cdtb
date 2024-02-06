@@ -10,7 +10,9 @@ module Decidim
       class UserSpamDetector < ::Decidim::Cdtb::Task
         include ActiveSupport::Configurable
 
-        config_accessor :spam_words
+        URL_REGEX = %r{(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])}.freeze
+
+        config_accessor :spam_words, :spam_regexp
 
         def initialize(organization = nil)
           @organization = organization
@@ -37,7 +39,7 @@ module Decidim
           progress_bar = context[:progress_bar]
 
           CSV.open("spam_users.csv", "w") do |csv|
-            csv_headers = ["Name", "Email", "Nickname", "Is suspicious?"]
+            csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About"]
             csv << csv_headers
 
             @users.find_each do |user|
@@ -48,11 +50,11 @@ module Decidim
                 @num_applied+= 1
               end
 
-              csv << [user.name, user.email, user.nickname, suspicious]
+              csv << [user.id, suspicious, user.name, user.email, user.nickname, user.personal_url, user.about]
             end
-          end
 
-          progress_bar.increment
+            progress_bar.increment
+          end
         end
 
         def end_execution(_ctx)
@@ -71,16 +73,11 @@ module Decidim
         private
 
         def has_spam_word?(user)
-          spam_words.any? do |word|
-            user.name.include?(word) || user.about&.include?(word) ||
-              user.nickname.include?(word) || user.personal_url&.include?(word)
-          end
+          [user.name, user.about, user.nickname, user.personal_url, user.about].compact.join("||").match?(spam_regexp)
         end
 
         def has_spam_url?(user)
-          url_regex = %r{(?:https?|http)://\S+}
-
-          !!(user&.about =~ url_regex || user.name =~ url_regex)
+          !!(user&.about =~ URL_REGEX || user.name =~ URL_REGEX)
         end
       end
     end

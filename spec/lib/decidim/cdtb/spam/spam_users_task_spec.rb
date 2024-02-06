@@ -36,7 +36,7 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
     before do
       subject { described_class.new(organization) }
     end
-    
+
     context "when the user is not spam suspicious" do
       let!(:users) { create_list :user, 6, organization: organization }
 

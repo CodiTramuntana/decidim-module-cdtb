@@ -81,9 +81,10 @@ To migrate from S3 to local storage, the identified steps will be:
 To detect spam in Decidim.
 
 #### Detect spam users
-This rake task export a .csv with a list of suspicious users.
+Detects users susceptible of being spammers. It can run on all organizations or be scoped to a single organization by passing the organization ID as the rake task parameter.
 
-- `bin/rake cdtb:spam:users[org_id]`
+This rake task export a .csv with a list of all the searched users. A column indicates if each user is suspicious of being a spammer or not.
+The columns in the CSV are: "ID, "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About"
 
 Examples:
 `bin/rake cdtb:spam:users[org_id]` --> find users in organization with an id.
