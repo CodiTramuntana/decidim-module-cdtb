@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    decidim-cdtb (0.1.4)
+    decidim-cdtb (0.1.5)
       decidim (>= 0.26.2)
       rails (>= 6)
       ruby-progressbar
@@ -775,4 +775,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.4.22
+   2.3.6

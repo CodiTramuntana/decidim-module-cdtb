@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "CodiTramuntana's Decidim Toolbelt (cdtb)."
   spec.description = "A gem to help managing Decidim applications."
-  spec.homepage = "http://github.com/CodiTramunana/cdtb"
+  spec.homepage = "https://github.com/CodiTramuntana/decidim-module-cdtb"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7.5"
 
