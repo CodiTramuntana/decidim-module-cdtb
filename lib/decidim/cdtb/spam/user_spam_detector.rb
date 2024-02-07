@@ -43,10 +43,10 @@ module Decidim
             csv << csv_headers
 
             @users.find_each do |user|
-              suspicious = "❌"
+              suspicious = "NO"
 
               if spam_user?(user)
-                suspicious = "✅"
+                suspicious = "YES"
                 @num_applied+= 1
               end
 
