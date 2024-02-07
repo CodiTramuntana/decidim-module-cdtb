@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.4] - 2024-01-30 (Peus grans com gegants)
+
+- Add users spam detector task
+
 ## [0.1.3] - 2023-06-23 (Tan iguals com especials)
 
 - Validate migrations task
