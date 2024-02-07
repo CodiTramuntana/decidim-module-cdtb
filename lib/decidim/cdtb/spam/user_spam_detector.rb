@@ -8,7 +8,11 @@ module Decidim
       # Detect spam behavior in users
       #
       class UserSpamDetector < ::Decidim::Cdtb::Task
-        URL_REGEX = %r{(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])}.freeze
+        # rubocop:disable Style/RedundantRegexpEscape
+        URL_REGEX = %r{(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|
+        www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|
+        (?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})}.freeze
+        # rubocop:enable Style/RedundantRegexpEscape
 
         def initialize(organization = nil)
           @organization = organization
