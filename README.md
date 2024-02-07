@@ -92,8 +92,8 @@ Examples:
 
 To set custom words in the rake, you can override it with an initalizer:
 
-Decidim::Cdtb::Spam::UserSpamDetector.configure do |config|
-  config.spam_words = %w[word1 word2]
+Decidim::Cdtb.configure do |config|
+  config.spam_words = ENV["CDTB_SPAM_WORDS"]&.split(",")
 end
 
 ### Upgrades:

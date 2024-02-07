@@ -10,6 +10,10 @@ module Decidim
         # Workaround for https://stackoverflow.com/questions/72970170/upgrading-to-rails-6-1-6-1-causes-psychdisallowedclass-tried-to-load-unspecif
         Rails.application.config.active_record.use_yaml_unsafe_load = true
       end
+
+      config.after_initialize do
+        Decidim::Cdtb.config.spam_regexp = Regexp.union(Decidim::Cdtb.config.spam_words)
+      end
     end
   end
 end

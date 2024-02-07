@@ -8,11 +8,7 @@ module Decidim
       # Detect spam behavior in users
       #
       class UserSpamDetector < ::Decidim::Cdtb::Task
-        include ActiveSupport::Configurable
-
         URL_REGEX = %r{(http|ftp|https)://([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])}.freeze
-
-        config_accessor :spam_words, :spam_regexp
 
         def initialize(organization = nil)
           @organization = organization
@@ -51,9 +47,9 @@ module Decidim
               end
 
               csv << [user.id, suspicious, user.name, user.email, user.nickname, user.personal_url, user.about]
-            end
 
-            progress_bar.increment
+              progress_bar.increment
+            end
           end
         end
 
@@ -73,7 +69,8 @@ module Decidim
         private
 
         def has_spam_word?(user)
-          [user.name, user.about, user.nickname, user.personal_url, user.about].compact.join("||").match?(spam_regexp)
+          [user.name, user.about, user.nickname,
+           user.personal_url, user.about].compact.join("||").match?(Decidim::Cdtb.config.spam_regexp)
         end
 
         def has_spam_url?(user)
