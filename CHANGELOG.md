@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.5] - 2024-??-?? (Pastissos voladors de colors)
+
+- Fix homepage in rubygems.org
+
 ## [0.1.4] - 2024-01-30 (Peus grans com gegants)
 
 - Add users spam detector task
