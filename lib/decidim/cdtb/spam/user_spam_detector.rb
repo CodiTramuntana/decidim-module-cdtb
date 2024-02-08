@@ -35,11 +35,12 @@ module Decidim
           @num_users
         end
 
+        # rubocop:disable Metrics/AbcSize
         def do_execution(context)
           progress_bar = context[:progress_bar]
-
           CSV.open("spam_users.csv", "w") do |csv|
-            csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About"]
+            csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About",
+                           "Organization ID", "Organization Name"]
             csv << csv_headers
 
             @users.find_each do |user|
@@ -50,12 +51,14 @@ module Decidim
                 @num_applied+= 1
               end
 
-              csv << [user.id, suspicious, user.name, user.email, user.nickname, user.personal_url, user.about]
+              csv << [user.id, suspicious, user.name, user.email, user.nickname, user.personal_url, user.about,
+                      user.organization.id, user.organization.name]
 
               progress_bar.increment
             end
           end
         end
+        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           if @num_applied.positive?

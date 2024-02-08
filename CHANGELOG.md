@@ -1,8 +1,9 @@
 ## [Unreleased]
 
-## [0.1.5] - 2024-??-?? (Pastissos voladors de colors)
+## [0.1.5] - 2024-02-08 (Pastissos voladors de colors)
 
 - Fix homepage in rubygems.org
+- Add organization id and name in spam csv
 
 ## [0.1.4] - 2024-01-30 (Peus grans com gegants)
 
