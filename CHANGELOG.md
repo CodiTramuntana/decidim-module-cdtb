@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.6] - 2024-04-11 (Malifetes ben fetes)
+
+- Add remover users task
+
 ## [0.1.5] - 2024-02-08 (Pastissos voladors de colors)
 
 - Fix homepage in rubygems.org
