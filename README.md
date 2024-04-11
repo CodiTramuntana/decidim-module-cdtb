@@ -100,7 +100,7 @@ This task iterates (with `find_each`) over all non managed users and nicknamizes
 To execute the task run:
 
 ```
-bin/rake cdtb:fix_nicknames
+bin/rake cdtb:users:fix_nicknames
 ```
 
 #### Remove users

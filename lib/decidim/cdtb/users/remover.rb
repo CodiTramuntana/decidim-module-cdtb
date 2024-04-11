@@ -8,6 +8,8 @@ module Decidim
       class Remover < ::Decidim::Cdtb::Task
         def initialize(csv)
           @csv = csv
+          progress_bar = { title: "Decidim::User" }
+          super("USER REMOVER", progress_bar: progress_bar)
         end
 
         def prepare_execution(_ctx); end
@@ -15,24 +17,18 @@ module Decidim
         def total_items; end
 
         def do_execution(context)
-          users_id_to_remove = []
+          progress_bar = context[:progress_bar]
 
           CSV.foreach(@csv, headers: true, col_sep: ",") do |row|
-            users_id_to_remove << row[0]
-          end
+            user = Decidim::User.find_by(id: row[0])
+            next unless user.present?
 
-          users_id_to_remove.each do |id|
-            user = Decidim::User.find_by(id: id)
-
-            if user.present?
-              reporter_user = Decidim::User.find_by(email: "support@coditramuntana.com",
-                                                    organization: user.organization)
-
-              comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
-
-              manage_comments(comments, reporter_user) if comments.present?
-              destroy_user(user) if block_user(user, reporter_user)
-            end
+            reporter_user = Decidim::User.find_by(email: "support@coditramuntana.com",
+                                                  organization: user.organization)
+            comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
+            manage_comments(comments, reporter_user) if comments.present?
+            destroy_user(user) if block_user(user, reporter_user)
+            progress_bar.increment
           end
         end
 
@@ -56,10 +52,10 @@ module Decidim
           }
 
           form = Decidim::Admin::BlockUserForm.from_params(params).with_context(
-            { 
+            {
               current_organization: user.organization,
               current_user: reporter_user
-            } 
+            }
           )
 
           Decidim::Admin::BlockUser.call(form) do
