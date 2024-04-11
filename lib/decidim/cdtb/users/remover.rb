@@ -8,9 +8,6 @@ module Decidim
       class Remover < ::Decidim::Cdtb::Task
         def initialize(csv)
           @csv = csv
-
-          progress_bar= { title: "Decidim::User" }
-          super("REMOVE USERS", progress_bar: progress_bar)
         end
 
         def prepare_execution(_ctx); end
@@ -18,7 +15,6 @@ module Decidim
         def total_items; end
 
         def do_execution(context)
-          progress_bar= context[:progress_bar]
           users_id_to_remove = []
 
           CSV.foreach(@csv, headers: true, col_sep: ",") do |row|
@@ -35,10 +31,8 @@ module Decidim
               comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
 
               manage_comments(comments, reporter_user) if comments.present?
-              destroy_user(user) if block_user(user)
+              destroy_user(user) if block_user(user, reporter_user)
             end
-
-            progress_bar.increment
           end
         end
 
@@ -55,14 +49,18 @@ module Decidim
           end
         end
 
-        def block_user(user)
-          # TODO: set current_organization for validation
+        def block_user(user, reporter_user)
           params = {
             user_id: user.id,
             justification: "Confirmed spam suspicious"
           }
 
-          form = Decidim::Admin::BlockUserForm.from_params(params)
+          form = Decidim::Admin::BlockUserForm.from_params(params).with_context(
+            { 
+              current_organization: user.organization,
+              current_user: reporter_user
+            } 
+          )
 
           Decidim::Admin::BlockUser.call(form) do
             on(:ok) do
