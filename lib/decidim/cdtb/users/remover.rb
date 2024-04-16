@@ -6,27 +6,29 @@ module Decidim
       # Remove Decidim::User's
       #
       class Remover < ::Decidim::Cdtb::Task
-        def initialize(csv)
-          @csv = csv
+        def initialize(csv_path)
+          @csv_path = csv_path
           progress_bar = { title: "Decidim::User" }
           super("USER REMOVER", progress_bar: progress_bar)
         end
 
         def prepare_execution(_ctx); end
 
-        def total_items; end
+        def total_items
+          File.open(@csv_path).readlines.size - 1
+        end
 
         def do_execution(context)
           progress_bar = context[:progress_bar]
 
-          CSV.foreach(@csv, headers: true, col_sep: ",") do |row|
+          CSV.foreach(@csv_path, headers: true, col_sep: ",") do |row|
             user = Decidim::User.find_by(id: row[0])
             next unless user.present?
 
             reporter_user = Decidim::User.find_by(email: "support@coditramuntana.com",
                                                   organization: user.organization)
             comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
-            manage_comments(comments, reporter_user) if comments.present?
+            manage_comments(comments, reporter_user) unless comments.empty?
             destroy_user(user) if block_user(user, reporter_user)
             progress_bar.increment
           end
@@ -39,7 +41,7 @@ module Decidim
         private
 
         def manage_comments(comments, reporter_user)
-          comments.each do |comment|
+          comments.find_each do |comment|
             report_comment(comment, reporter_user)
             hide_comment(comment, reporter_user)
           end
