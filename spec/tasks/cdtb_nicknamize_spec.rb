@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe "rake cdtb:fix_nicknames", type: :task do
+RSpec.describe "rake cdtb:users:fix_nicknames", type: :task do
   let!(:user) { create(:user) }
 
   context "when executing task" do

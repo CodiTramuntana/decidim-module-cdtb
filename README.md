@@ -36,17 +36,6 @@ bin/rake cdtb:org_by_host_like[vila]
 host: localhost, time_zone: Madrid, locales: ca + [ca, es, oc], available authorizations: [postal_letter, members_picker_authorization_handler]
 ```
 
-### Fix nicknames
-
-In a previous version than Decidim v0.25 a validation to the `Decidim::User.nickname` was added with a migration to fix existing nicknames. But the migration was only taking into acocunt managed (impersonated) users.
-
-This task iterates (with `find_each`) over all non managed users and nicknamizes the nickname.
-
-To execute the task run:
-
-```
-bin/rake cdtb:fix_nicknames
-```
 
 ### Anonymize production dump
 
@@ -96,6 +85,36 @@ To set custom words in the rake, you can override it with an initalizer:
 Decidim::Cdtb.configure do |config|
   config.spam_words = ENV["CDTB_SPAM_WORDS"]&.split(",")
 end
+```
+
+### Users
+
+Tasks related with users.
+
+### Fix nicknames
+
+In a previous version than Decidim v0.25 a validation to the `Decidim::User.nickname` was added with a migration to fix existing nicknames. But the migration was only taking into account managed (impersonated) users.
+
+This task iterates (with `find_each`) over all non managed users and nicknamizes the nickname.
+
+To execute the task run:
+
+```
+bin/rake cdtb:users:fix_nicknames
+```
+
+#### Remove users
+
+You can delete users through a CSV with the user ID. The purpose is to be able to eliminate potentially spammy users.
+
+This task reports and hide the user's comments, blocks the user, and finally deletes the user.
+
+The CSV will have a header and one column with the user ID.
+
+To execute the task run:
+
+```
+bundle exec rake cdtb:users:remove[spam_users.csv]
 ```
 
 ### Upgrades:
