@@ -28,7 +28,7 @@ module Decidim
             reporter_user = Decidim::User.find_by(email: "support@coditramuntana.com",
                                                   organization: user.organization)
             comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
-            manage_comments(comments, reporter_user) unless comments.empty?
+            manage_comments(comments, user, reporter_user) unless comments.empty?
             destroy_user(user) if block_user(user, reporter_user)
             progress_bar.increment
           end
@@ -40,10 +40,10 @@ module Decidim
 
         private
 
-        def manage_comments(comments, reporter_user)
+        def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|
-            report_comment(comment, reporter_user)
-            hide_comment(comment, reporter_user)
+            report_comment(comment, user, reporter_user)
+            hide_comment(comment, user, reporter_user) unless comment.hidden?
           end
         end
 
@@ -91,7 +91,7 @@ module Decidim
           end
         end
 
-        def report_comment(comment, reporter_user)
+        def report_comment(comment, user, reporter_user)
           params = {
             reason: "spam",
             details: "Spam message"
@@ -99,7 +99,7 @@ module Decidim
 
           form = Decidim::ReportForm.from_params(params)
 
-          CreateReport.call(form, comment, reporter_user) do
+          Decidim::CreateReport.call(form, comment, reporter_user) do
             on(:ok) do
               puts "OK: Comment #{comment.id} of User #{user.id} reported"
             end
@@ -110,7 +110,7 @@ module Decidim
           end
         end
 
-        def hide_comment(comment, reporter_user)
+        def hide_comment(comment, user, reporter_user)
           Admin::HideResource.call(comment, reporter_user) do
             on(:ok) do
               puts "OK: Comment #{comment.id} of User #{user.id} hided"
