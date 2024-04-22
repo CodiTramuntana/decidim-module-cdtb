@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.1.7] - 2024-??-?? (Emocions de colors)
+## [0.1.7] - 2024-04-22 (Emocions de colors)
 
 - Fix remove users task and add the reporter user mailer to arguments
 
