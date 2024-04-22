@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.7] - 2024-??-?? (Emocions de colors)
+
+- Fix remove users task and add the reporter user mailer to arguments
+
 ## [0.1.6] - 2024-04-11 (Malifetes ben fetes)
 
 - Add remover users task

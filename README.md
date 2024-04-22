@@ -105,7 +105,7 @@ bin/rake cdtb:users:fix_nicknames
 
 #### Remove users
 
-You can delete users through a CSV with the user ID. The purpose is to be able to eliminate potentially spammy users.
+You can delete users through a CSV with the user ID and a reporter user mailer. The purpose is to be able to eliminate potentially spammy users.
 
 This task reports and hide the user's comments, blocks the user, and finally deletes the user.
 
@@ -114,7 +114,7 @@ The CSV will have a header and one column with the user ID.
 To execute the task run:
 
 ```
-bundle exec rake cdtb:users:remove[spam_users.csv]
+bundle exec rake cdtb:users:remove[spam_users.csv, reporter_user@example.org]
 ```
 
 ### Upgrades:

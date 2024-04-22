@@ -6,8 +6,9 @@ module Decidim
       # Remove Decidim::User's
       #
       class Remover < ::Decidim::Cdtb::Task
-        def initialize(csv_path)
+        def initialize(csv_path, reporter_user_email)
           @csv_path = csv_path
+          @reporter_user_email = reporter_user_email
           progress_bar = { title: "Decidim::User" }
           super("USER REMOVER", progress_bar: progress_bar)
         end
@@ -25,7 +26,7 @@ module Decidim
             user = Decidim::User.find_by(id: row[0])
             next unless user.present?
 
-            reporter_user = Decidim::User.find_by(email: "support@coditramuntana.com",
+            reporter_user = Decidim::User.find_by(email: @reporter_user_email,
                                                   organization: user.organization)
             comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
             manage_comments(comments, user, reporter_user) unless comments.empty?
@@ -43,7 +44,6 @@ module Decidim
         def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|
             report_comment(comment, user, reporter_user)
-            hide_comment(comment, user, reporter_user) unless comment.hidden?
           end
         end
 
@@ -97,9 +97,10 @@ module Decidim
             details: "Spam message"
           }
 
-          form = Decidim::ReportForm.from_params(params)
+          form = Decidim::ReportForm.from_params(params).with_context(context_for_report(user, comment, reporter_user))
+          reportable = GlobalID::Locator.locate_signed(comment.to_sgid.to_s)
 
-          Decidim::CreateReport.call(form, comment, reporter_user) do
+          Decidim::CreateReport.call(form, reportable, reporter_user) do
             on(:ok) do
               puts "OK: Comment #{comment.id} of User #{user.id} reported"
             end
@@ -110,16 +111,13 @@ module Decidim
           end
         end
 
-        def hide_comment(comment, user, reporter_user)
-          Admin::HideResource.call(comment, reporter_user) do
-            on(:ok) do
-              puts "OK: Comment #{comment.id} of User #{user.id} hided"
-            end
-
-            on(:invalid) do
-              puts "ERROR: Comment #{comment.id} of User #{user.id} not hided"
-            end
-          end
+        def context_for_report(user, comment, reporter_user)
+          {
+            current_organization: user.organization,
+            current_component: comment.component,
+            current_user: reporter_user,
+            current_participatory_space: comment.participatory_space
+          }
         end
       end
     end

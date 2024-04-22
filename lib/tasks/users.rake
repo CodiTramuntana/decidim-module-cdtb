@@ -15,8 +15,8 @@ namespace :cdtb do
     desc <<~EODESC
       Remove Decidim::User's by IDs in a CSV.
     EODESC
-    task :remove, %i[csv_file] => [:environment] do |_taks, args|
-      service = ::Decidim::Cdtb::Users::Remover.new(args.csv_file)
+    task :remove, %i[csv_path reporter_user_email] => [:environment] do |_taks, args|
+      service = ::Decidim::Cdtb::Users::Remover.new(args.csv_path, args.reporter_user_email)
       service.execute!
     end
   end
