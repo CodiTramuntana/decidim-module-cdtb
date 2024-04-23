@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    decidim-cdtb (0.1.7)
+    decidim-cdtb (0.1.8)
       decidim (>= 0.26.2)
       rails (>= 6)
       ruby-progressbar

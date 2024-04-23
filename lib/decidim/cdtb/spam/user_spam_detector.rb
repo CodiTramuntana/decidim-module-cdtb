@@ -21,10 +21,12 @@ module Decidim
         end
 
         def prepare_execution(_ctx)
+          base_query = Decidim::User.where(deleted_at: nil)
+
           @users = if @organization.present?
-                     Decidim::User.where(organization: @organization)
+                     base_query.where(organization: @organization)
                    else
-                     Decidim::User.all
+                     base_query
                    end
 
           @num_users = @users.count
