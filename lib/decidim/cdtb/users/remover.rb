@@ -5,6 +5,7 @@ module Decidim
     module Users
       # Remove Decidim::User's
       #
+      # rubocop:disable Metrics/ClassLength
       class Remover < ::Decidim::Cdtb::Task
         def initialize(csv_path, reporter_user_email)
           @csv_path = csv_path
@@ -44,6 +45,7 @@ module Decidim
         def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|
             report_comment(comment, user, reporter_user)
+            hide_comment(comment, user, reporter_user) unless comment.hidden?
           end
         end
 
@@ -111,6 +113,18 @@ module Decidim
           end
         end
 
+        def hide_comment(comment, user, reporter_user)
+          Admin::HideResource.call(comment, reporter_user) do
+            on(:ok) do
+              puts "OK: Comment #{comment.id} of User #{user.id} hided"
+            end
+
+            on(:invalid) do
+              puts "ERROR: Comment #{comment.id} of User #{user.id} not hided"
+            end
+          end
+        end
+
         def context_for_report(user, comment, reporter_user)
           {
             current_organization: user.organization,
@@ -120,6 +134,7 @@ module Decidim
           }
         end
       end
+      # rubocop:enable Metrics/ClassLength
     end
   end
 end

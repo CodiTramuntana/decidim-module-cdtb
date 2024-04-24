@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.1.8] - 2024-04-24 (Sapastre i bonastre)
+
+- Fix spam users detector with deleted_at param and hide comments in remover users.
+
 ## [0.1.7] - 2024-04-22 (Emocions de colors)
 
 - Fix remove users task and add the reporter user mailer to arguments
