@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.1.9] - 2024-05-08 (Dona'm gelat o l'hem liat)
+
+- Include a versatile rack attack anti bots and crawlers.
+- Add rake task to analyse logs for abusing IPs.
+
 ## [0.1.8] - 2024-04-24 (Sapastre i bonastre)
 
 - Fix spam users detector with deleted_at param and hide comments in remover users.

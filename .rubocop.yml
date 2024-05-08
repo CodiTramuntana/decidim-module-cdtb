@@ -32,7 +32,7 @@ Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
 
 Layout/LineLength:
-  Max: 120
+  Max: 140
 
 Layout/SpaceAroundOperators:
   Enabled: false
