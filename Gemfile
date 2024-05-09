@@ -25,5 +25,5 @@ end
 
 group :test do
   gem "rspec", "~> 3.0"
-  gem "sqlite3"
+  gem "sqlite3", "~> 1.4"
 end

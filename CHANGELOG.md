@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.2.0] - 2024-05-09 (Dona'm gelat o l'hem liat)
+
+- Upgrade Ruby to 3.0.7
+- Upgrade min Decidim version to 0.27
+
 ## [0.1.9] - 2024-05-08 (Dona'm gelat o l'hem liat)
 
 - Include a versatile rack attack anti bots and crawlers.

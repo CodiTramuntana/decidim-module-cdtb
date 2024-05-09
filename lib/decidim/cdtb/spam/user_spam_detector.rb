@@ -40,7 +40,9 @@ module Decidim
         # rubocop:disable Metrics/AbcSize
         def do_execution(context)
           progress_bar = context[:progress_bar]
-          CSV.open("spam_users.csv", "w") do |csv|
+          filename= "spam_users.csv" 
+          filepath= Rails.env.test? ? "tmp/#{filename}" : filename 
+          CSV.open(filepath, "w") do |csv|
             csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About",
                            "Organization ID", "Organization Name"]
             csv << csv_headers
