@@ -3,8 +3,8 @@
 unless ENV["CDTB_RACK_ATTACK_DISABLED"].to_i.positive? || %w[development test].include?(Rails.env)
   require "rack/attack"
 
-  limit= ENV["RACK_ATTACK_THROTTLE_LIMIT"] || 30
-  period= ENV["RACK_ATTACK_THROTTLE_PERIOD"] || 60
+  limit= ENV.fetch("RACK_ATTACK_THROTTLE_LIMIT", 30)
+  period= ENV.fetch("RACK_ATTACK_THROTTLE_PERIOD", 60)
   Rails.logger.info("Configuring Rack::Attack.throttle with limit: #{limit}, period: #{period}")
   Rack::Attack.throttle("requests by (forwarded) ip", limit: limit.to_i, period: period.to_i) do |request|
     # ignore requests to assets

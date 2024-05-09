@@ -75,6 +75,9 @@ jobs:
           retry_on: error
           command: bundle install --jobs 4 --retry 3
 
+      - name: Make tmp/ dir
+        run: mkdir tmp
+
       - name: Generate test_app
         run: |
           bin/rails decidim:generate_external_test_app

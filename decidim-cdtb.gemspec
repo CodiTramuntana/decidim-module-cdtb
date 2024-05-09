@@ -35,4 +35,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "decidim-dev", Decidim::Cdtb::DECIDIM_MIN_VERSION
   spec.add_development_dependency "faker"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end
