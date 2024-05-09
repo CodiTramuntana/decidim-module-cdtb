@@ -65,17 +65,35 @@ To migrate from S3 to local storage, the identified steps will be:
     `bin/rake cache:clear`
 5. Restart the Rails server
 
-### Detect spam
+### Spam & bots
 
-To detect spam in Decidim.
+Spam and bots are daily menaces in the current Internet. Decidim is not an exception, and is affected by both security concerns and performance.
+
+#### Bad bots and crawlers
+
+Decidim is already bundled with Rack::Attack but it lacks some features like IP banning or throttling by forwarded IP (useful when Decidim is behind a proxy). CDTB by default enables Rack::Attack with these features.
+
+Four ENV variables exist to configure its behaviour:
+
+- CDTB_RACK_ATTACK_DISABLED: Set to 1 to disable CDTB's Rack:Attack.
+- RACK_ATTACK_THROTTLE_LIMIT: The max. allowed number of requests during the period. Defaults to 30.
+- RACK_ATTACK_THROTTLE_PERIOD: The period in seconds. Defaults to 60.
+- RACK_ATTACK_BLOCKED_IPS: A comma separated list of blocked IPs or subnets (in the form 1.2.3.0/32).
+
+
+Available rake tasks to help analize crawlers:
+
+- `bin/rake cdtb:logs:num_rq_per_ip` Counts the number of requests for each IP in the logs. Accepts a logfile param, it must be in log/.
 
 #### Detect spam users
+
 Detects users susceptible of being spammers. It can run on all organizations or be scoped to a single organization by passing the organization ID as the rake task parameter.
 
 This rake task export a .csv with a list of all the searched users. A column indicates if each user is suspicious of being a spammer or not.
 The columns in the CSV are: "ID, "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About"
 
 Examples:
+
 `bin/rake cdtb:spam:users[org_id]` --> find users in organization with an id.
 `bin/rake cdtb:spam:users` --> find all users in all organizations.
 
