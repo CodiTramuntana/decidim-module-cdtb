@@ -67,7 +67,7 @@ To migrate from S3 to local storage, the identified steps will be:
 
 ### Spam & bots
 
-Spam and bots are daily menaces in the current Internet. Decidim is not an exeption, and is affected by both security concerns and performance.
+Spam and bots are daily menaces in the current Internet. Decidim is not an exception, and is affected by both security concerns and performance.
 
 #### Bad bots and crawlers
 
