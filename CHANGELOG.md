@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.2.0] - 2024-05-09 (Dona'm gelat o l'hem liat)
+## [0.2.0] - 2024-05-10 (Vaig a l'escola, com mola!)
 
 - Upgrade Ruby to 3.0.7
 - Upgrade min Decidim version to 0.27
