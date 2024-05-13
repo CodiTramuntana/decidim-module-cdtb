@@ -2,7 +2,7 @@
 
 module Decidim
   module Cdtb
-    VERSION = "0.1.9"
-    DECIDIM_MIN_VERSION = ">= 0.26.2"
+    VERSION = "0.2.0"
+    DECIDIM_MIN_VERSION = ">= 0.27.0"
   end
 end

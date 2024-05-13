@@ -97,8 +97,8 @@ namespace :cdtb do
           unconfirmed_email: nil,
           avatar: nil,
           extended_data: user_group.extended_data.merge({
-                                                          "phone": "123456789",
-                                                          "document_number":
+                                                          phone: "123456789",
+                                                          document_number:
                                                           "document-#{user_group.id}"
                                                         })
         )

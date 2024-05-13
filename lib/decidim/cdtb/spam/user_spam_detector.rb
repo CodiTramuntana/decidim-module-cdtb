@@ -11,7 +11,7 @@ module Decidim
         # rubocop:disable Style/RedundantRegexpEscape
         URL_REGEX = %r{(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|
         www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|
-        (?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})}.freeze
+        (?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})}
         # rubocop:enable Style/RedundantRegexpEscape
 
         def initialize(organization = nil)
@@ -40,7 +40,9 @@ module Decidim
         # rubocop:disable Metrics/AbcSize
         def do_execution(context)
           progress_bar = context[:progress_bar]
-          CSV.open("spam_users.csv", "w") do |csv|
+          filename= "spam_users.csv"
+          filepath= Rails.env.test? ? "tmp/#{filename}" : filename
+          CSV.open(filepath, "w") do |csv|
             csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About",
                            "Organization ID", "Organization Name"]
             csv << csv_headers

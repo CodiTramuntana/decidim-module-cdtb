@@ -46,10 +46,10 @@ namespace :cdtb do
 
     def fill_handler_args(handler, args)
       arguments= args.to_a[1..]
-      current_organization= if !arguments.first.include?(":")
-                              Decidim::Organization.find(arguments.first)
-                            else
+      current_organization= if arguments.first.include?(":")
                               Decidim::Organization.first
+                            else
+                              Decidim::Organization.find(arguments.first)
                             end
       handler.with_context(current_organization: current_organization)
 
