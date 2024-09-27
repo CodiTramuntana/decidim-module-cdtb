@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.1] - 2024-09-25 (patch)
+
+- Fix validate_migrations CI which requires Postgres service
+
 ## [0.2.0] - 2024-05-10 (Vaig a l'escola, com mola!)
 
 - Upgrade Ruby to 3.0.7
