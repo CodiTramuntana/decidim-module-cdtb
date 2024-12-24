@@ -9,6 +9,7 @@ require_relative "lib/decidim/cdtb/version"
 
 # temporal solution while gems embrace new psych 4 (the default in Ruby 3.1) behavior.
 gem "psych", "< 4"
+gem "uri", ">= 0.13.1"
 
 group :development, :test do
   gem "bootsnap", require: false
