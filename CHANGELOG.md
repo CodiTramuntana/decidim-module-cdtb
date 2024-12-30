@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.1] - 2024-09-25
+
+- Add task to add new content blocks in participatory processes
+
 ## [0.2.1] - 2024-09-25 (patch)
 
 - Fix validate_migrations CI which requires Postgres service
