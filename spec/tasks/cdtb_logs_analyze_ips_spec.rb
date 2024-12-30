@@ -2,6 +2,7 @@
 
 require "spec_helper"
 
+# TODO: review this test.. analyze_ips not exists
 RSpec.describe "rake cdtb:logs:analyze_ips", type: :task do
   context "when executing task" do
     it "have to be executed without failures" do
