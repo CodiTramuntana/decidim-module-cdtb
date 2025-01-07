@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.3.0] - 2024-12-24 (minor)
+
+- Fix YouTube embeds to Decidim v0.28 format in different places. Only YouTube is supported right now.
+
 ## [0.2.1] - 2024-09-25 (patch)
 
 - Fix validate_migrations CI which requires Postgres service

@@ -51,6 +51,21 @@ Available rake tasks:
 - `bin/rake cdtb:anonymize:system_admins` anonymizes system admins
 - `bin/rake cdtb:anonymize:paper_trail` anonymizes paper trails
 
+### Fix YouTube embeds for Decidim v0.28
+
+Fixes YouTube embeds to Decidim v0.28 format in different places, which at the moment are:
+
+- Decidim::Meetings::Meeting
+- Decidim::Debates::Debate
+- Decidim::Pages::Page
+- Decidim::Assembly
+- Decidim::ParticipatoryProcess
+
+```
+bin/rake cdtb:embeds:fix_youtube
+```
+
+
 ### Migrate ActiveStorage service from S3 to local
 
 To migrate from S3 to local storage, the identified steps will be:
