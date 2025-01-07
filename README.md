@@ -138,6 +138,7 @@ bundle exec rake cdtb:users:remove[spam_users.csv, reporter_user@example.org]
 ### Participatory Spaces / Add content blocks 
 
 You can add content blocks to a participatory spaces with the content block name (manifest_name).
+This rake task affects spaces in all organizations.
 
 Content block manifest names list:
 
