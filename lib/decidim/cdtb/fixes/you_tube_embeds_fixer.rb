@@ -81,7 +81,7 @@ module Decidim
             next if content.blank?
 
             fixes= fix_localized_embed(content)
-            contents[locale]= fixes.find { |fix| fix != false } if fixes.any?
+            contents[locale]= fixes.reverse.find { |fix| fix != false } if fixes.any?
           end
         end
 

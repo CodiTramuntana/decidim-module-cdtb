@@ -9,25 +9,27 @@ require "decidim/participatory_processes/test/factories"
 RSpec.describe ::Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
   subject { described_class.new }
 
-  describe "#prepare_execution" do
-    context "with one model of each class" do
-      let!(:meeting) { create(:meeting) }
-      let!(:debate) { create(:debate) }
-      let!(:page) do
-        Decidim::Pages::Page.create!(
-          body: Decidim::Faker::Localized.wrapped("<p>", "</p>") { generate_localized_title },
-          component: create(:component, manifest_name: "pages")
-        )
-      end
-      let!(:assembly) { create(:assembly) }
+  context "with one model of each class" do
+    let!(:meeting) { create(:meeting) }
+    let!(:debate) { create(:debate) }
+    let!(:page) do
+      Decidim::Pages::Page.create!(
+        body: Decidim::Faker::Localized.wrapped("<p>", "</p>") { generate_localized_title },
+        component: create(:component, manifest_name: "pages")
+      )
+    end
+    let!(:assembly) { create(:assembly) }
 
+    describe "#prepare_execution" do
       it "returns the total of models to be processed" do
         subject.prepare_execution
 
         # one for each model plus one process for each component
         expect(subject.total_items).to be 7
       end
+    end
 
+    describe "#execute!" do
       context "when none contains embeds" do
         it "does not fix anything" do
           subject.execute!
@@ -69,6 +71,38 @@ RSpec.describe ::Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
           end
         end
       end
+    end
+  end
+
+  context "with many embeds in the same attribute" do
+    let(:short_description) do
+      {
+        ca: <<~EOSD
+          <div class="editor-content-videoEmbed" data-video-embed="https://www.youtube.com/embed/GHpRgZcHB1g"><div><iframe src="https://www.youtube.com/embed/GHpRgZcHB1g" title="" frameborder="0" allowfullscreen="true"></iframe></div></div>
+          <p></p>#{"                                                             "}
+          <p></p>#{"                                                             "}
+          <div class="editor-content-videoEmbed" data-video-embed="https://www.youtube.com/embed/GHpRgZcHB1g"><div><iframe src="https://www.youtube.com/embed/GHpRgZcHB1g" title="" frameborder="0" allowfullscreen="true"></iframe></div></div>
+          <p></p>#{"                                                             "}
+          <p></p>#{"                                                             "}
+          <p></p>#{"                                                             "}
+          <p></p>#{"                                                             "}
+          <p></p>#{"                                                             "}
+          <p>embeed </p>#{"                                                      "}
+          <div class="editor-content-videoEmbed" data-video-embed="https://www.youtube.com/embed/GHpRgZcHB1g"><div><iframe src="https://www.youtube.com/embed/GHpRgZcHB1g" title="" frameborder="0" allowfullscreen="true"></iframe></div></div>
+          <div class="editor-content-videoEmbed" data-video-embed="https://www.youtube.com/embed/GHpRgZcHB1g"><div><iframe src="https://www.youtube.com/embed/GHpRgZcHB1g" title="" frameborder="0" allowfullscreen="true"></iframe></div></div>
+        EOSD
+      }
+    end
+    let!(:assembly) { create(:assembly, short_description: short_description) }
+
+    it "fixes the whole attribute" do
+      subject.execute!
+      expect(subject.num_fixed).to be 1
+      attrib= :short_description
+      i18n_content= assembly.reload.send(attrib)
+      expect(i18n_content["ca"]).to_not include("https://www.youtube.com/embed")
+      expect(i18n_content["ca"].scan("https://www.youtube.com/watch").size).to eq(4)
+      expect(i18n_content["ca"].scan("https://www.youtube-nocookie.com/embed").size).to eq(4)
     end
   end
 end
