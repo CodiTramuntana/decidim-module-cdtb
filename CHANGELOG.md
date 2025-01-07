@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.3.1] - 2024-09-25
+## [0.3.0] - 2024-09-25
 
 - Add task to add new content blocks in participatory processes
 
