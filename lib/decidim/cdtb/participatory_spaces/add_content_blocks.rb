@@ -40,14 +40,13 @@ module Decidim
               log_task_step("Adding #{content_block_name} content block")
 
               spaces.find_each do |space|
-                current_content_blocks = current_space_content_blocks(scope_name, space.organization, space.id)
+                current_content_blocks = current_space_content_blocks(scope_name(space), space.organization, space.id)
 
                 new_content_block = create_content_block!(space, content_block_name, current_content_blocks)
-                # extra_data content block must be down of hero image, therefore, the weight is 2
                 if content_block_name == "extra_data" && space.instance_of?(Decidim::ParticipatoryProcess)
-                  next if new_content_block.weight == 2 || new_content_block.weight == 20
+                  next if new_content_block.weight == 20
 
-                  exchange_extra_data_content_block_weight!(content_block_name, current_content_blocks)
+                  force_extra_data_content_block_weight!(content_block_name, current_content_blocks)
                 end
 
                 @num_added += 1
@@ -62,8 +61,9 @@ module Decidim
         end
 
         def create_content_block!(space, content_block_name, current_content_blocks)
-          exists_content_block = Decidim::ContentBlock.find_by(decidim_organization_id: space.organization.id, scope_name: scope_name,
-                                                               manifest_name: content_block_name, scoped_resource_id: space.id)
+          exists_content_block = Decidim::ContentBlock.find_by(decidim_organization_id: space.organization.id,
+                                                               scope_name: scope_name(space), manifest_name: content_block_name,
+                                                               scoped_resource_id: space.id)
 
           return exists_content_block if exists_content_block.present?
 
@@ -72,7 +72,7 @@ module Decidim
           Decidim::ContentBlock.create(
             decidim_organization_id: space.organization.id,
             weight: weight,
-            scope_name: scope_name,
+            scope_name: scope_name(space),
             scoped_resource_id: space.id,
             manifest_name: content_block_name,
             published_at: Time.current
@@ -80,20 +80,18 @@ module Decidim
         end
         # rubocop:enable Metrics/AbcSize
 
-        def exchange_extra_data_content_block_weight!(content_block_name, current_content_blocks)
-          old_content_block_with_weight = current_content_blocks.find_by(weight: [2, 20])
-          content_block_to_move = current_content_blocks.find_by(manifest_name: content_block_name)
+        # +extra_data+ content block usually be down of hero image, therefore, it's weight is 20 and all others content blocks
+        # go one position down added 10
+        def force_extra_data_content_block_weight!(content_block_name, current_content_blocks)
+          extra_data_content_block = current_content_blocks.find_by(manifest_name: content_block_name)
+          extra_data_content_block.update(weight: 20)
 
-          new_weight = nil
+          current_content_blocks.each do |content_block|
+            # hero is usually the first content block
+            next if content_block == extra_data_content_block || content_block.manifest_name == "hero"
 
-          if old_content_block_with_weight.present?
-            new_weight = old_content_block_with_weight.weight
-            old_content_block_with_weight.update(weight: content_block_to_move.weight)
-          else
-            new_weight = current_content_blocks.weight == 1 ? 2 : 20
+            content_block.update(weight: content_block.weight + 10)
           end
-
-          content_block_to_move.update(weight: new_weight)
         end
 
         def current_space_content_blocks(scope_name, organization, scoped_resource_id)
