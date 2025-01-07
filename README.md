@@ -135,9 +135,9 @@ To execute the task run:
 bundle exec rake cdtb:users:remove[spam_users.csv, reporter_user@example.org]
 ```
 
-### Participatory Processes / Add content blocks 
+### Participatory Spaces / Add content blocks 
 
-You can add content blocks to a participatory processes with the content block name (manifest_name).
+You can add content blocks to a participatory spaces with the content block name (manifest_name).
 
 Content block manifest names list:
 
@@ -178,6 +178,11 @@ highlighted_posts
 last_activity
 ```
 
+Spaces supported:
+
+- Decidim::ParticipatoryProcess
+- Decidim::Assembly
+
 To execute the task run:
 
 ```
@@ -192,7 +197,7 @@ bundle exec rake cdtb:participatory_spaces:add_content_blocks[['manifest_name_on
 
 Some examples
 ```
-bundle exec rake cdtb:participatory_spaces:add_content_blocks[ extra_data]
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[extra_data]
 
 bundle exec rake cdtb:participatory_spaces:add_content_blocks[['extra_data related_documents']]
 
