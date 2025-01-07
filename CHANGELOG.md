@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.2.2] - 2024-12-24 (minor)
+## [0.3.0] - 2024-12-24 (minor)
 
 - Fix YouTube embeds to Decidim v0.28 format in different places. Only YouTube is supported right now.
 
