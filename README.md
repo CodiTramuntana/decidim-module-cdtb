@@ -150,6 +150,75 @@ To execute the task run:
 bundle exec rake cdtb:users:remove[spam_users.csv, reporter_user@example.org]
 ```
 
+### Participatory Spaces / Add content blocks 
+
+You can add content blocks to a participatory spaces with the content block name (manifest_name).
+This rake task affects spaces in all organizations.
+
+Content block manifest names list:
+
+```
+basic_only_text
+image_text_cta
+metadata
+hero
+participatory_processes
+html_2
+main_data
+title
+cta
+highlighted_proposals
+how_to_participate
+html_1
+related_documents
+stats
+html
+slider
+footer_sub_hero
+global_menu
+sub_hero
+highlighted_content_banner
+highlighted_processes
+highlighted_assemblies
+highlighted_regulations
+upcoming_meetings
+extra_data
+highlighted_meetings
+highlighted_results
+metrics
+related_assemblies
+announcement
+social_networks_metadata
+related_processes
+highlighted_posts
+last_activity
+```
+
+Spaces supported:
+
+- Decidim::ParticipatoryProcess
+- Decidim::Assembly
+
+To execute the task run:
+
+```
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[manifest_name]
+```
+
+You can add multiple manifest names with this format:
+
+```
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[['manifest_name_one manifest_name_two']]
+```
+
+Some examples
+```
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[extra_data]
+
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[['extra_data related_documents']]
+
+```
+
 ### Upgrades:
 
 #### Upgrade modules
