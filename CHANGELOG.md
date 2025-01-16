@@ -1,11 +1,11 @@
 ## [Unreleased]
 
-## [0.3.0] - 2024-12-24 (minor)
+## [0.3.0] - 2024-12-24 (minor - L'artista de la pista)
 
 - Fix YouTube embeds to Decidim v0.28 format in different places. Only YouTube is supported right now.
 - Add task to add new content blocks in participatory processes
 
-## [0.2.1] - 2024-09-25 (patch)
+## [0.2.1] - 2024-09-25 (patch - Una idea sobre rodes)
 
 - Fix validate_migrations CI which requires Postgres service
 
