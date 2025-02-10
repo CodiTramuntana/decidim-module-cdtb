@@ -56,11 +56,6 @@ module Decidim
         def end_execution(_ctx)
           log_task_step("#{@num_added} content blocks added")
         end
-
-        # --------------------------------------------------
-        private
-
-        # --------------------------------------------------
       end
     end
   end

@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
+require "decidim/cdtb/participatory_spaces/utils"
+
 module Decidim
   module Cdtb
     module ParticipatorySpaces
+      include ::Decidim::Cdtb::ParticipatorySpaces::Utils
+
       # Add content blocks to participatory spaces
       class AddContentBlocks < ::Decidim::Cdtb::Task
         def initialize(processed_models, content_block_names)
@@ -60,26 +64,6 @@ module Decidim
           log_task_step("#{@num_added} content blocks added")
         end
 
-        def create_content_block!(space, content_block_name, current_content_blocks)
-          exists_content_block = Decidim::ContentBlock.find_by(decidim_organization_id: space.organization.id,
-                                                               scope_name: scope_name(space), manifest_name: content_block_name,
-                                                               scoped_resource_id: space.id)
-
-          return exists_content_block if exists_content_block.present?
-
-          weight = (current_content_blocks.last.weight + 1) * 10
-          log_task_step("Adding #{content_block_name} to #{space.slug}[#{space.id}]")
-          Decidim::ContentBlock.create(
-            decidim_organization_id: space.organization.id,
-            weight: weight,
-            scope_name: scope_name(space),
-            scoped_resource_id: space.id,
-            manifest_name: content_block_name,
-            published_at: Time.current
-          )
-        end
-        # rubocop:enable Metrics/AbcSize
-
         # +extra_data+ content block usually be down of hero image, therefore, it's weight is 20 and all others content blocks
         # go one position down added 10
         def force_extra_data_content_block_weight!(content_block_name, current_content_blocks)
@@ -92,24 +76,6 @@ module Decidim
 
             content_block.update(weight: content_block.weight + 10)
           end
-        end
-
-        def current_space_content_blocks(scope_name, organization, scoped_resource_id)
-          Decidim::ContentBlock.for_scope(scope_name, organization: organization).where(scoped_resource_id: scoped_resource_id)
-        end
-
-        # --------------------------------------------------
-        private
-
-        # --------------------------------------------------
-
-        def manifest_for(resource)
-          return resource.manifest if resource.is_a? Decidim::Participable
-          return resource.resource_manifest if resource.is_a? Decidim::Resourceable
-        end
-
-        def scope_name(space)
-          manifest_for(space).content_blocks_scope_name
         end
       end
     end
