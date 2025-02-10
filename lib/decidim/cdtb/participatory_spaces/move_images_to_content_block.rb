@@ -52,6 +52,7 @@ module Decidim
             end
           end
         end
+        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           log_task_step("#{@num_added} content blocks added")

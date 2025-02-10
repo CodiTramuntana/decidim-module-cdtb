@@ -5,10 +5,10 @@ require "decidim/cdtb/participatory_spaces/utils"
 module Decidim
   module Cdtb
     module ParticipatorySpaces
-      include ::Decidim::Cdtb::ParticipatorySpaces::Utils
-
       # Add content blocks to participatory spaces
       class AddContentBlocks < ::Decidim::Cdtb::Task
+        include ::Decidim::Cdtb::ParticipatorySpaces::Utils
+
         def initialize(processed_models, content_block_names)
           progress_bar= { title: self.class.name }
           @processed_models = processed_models
@@ -59,6 +59,7 @@ module Decidim
             end
           end
         end
+        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           log_task_step("#{@num_added} content blocks added")

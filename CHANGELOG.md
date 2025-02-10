@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.4.0] - 2025-02-10 (minor - Llefiscós però deliciós )
+## [0.4.0] - 2025-02-10 (minor - Llefiscós però deliciós)
 
 - Add task to move images to hero content block in participatory spaces
 

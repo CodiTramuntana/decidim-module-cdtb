@@ -3,7 +3,9 @@
 module Decidim
   module Cdtb
     module ParticipatorySpaces
+      # Methods for use in participatory spaces tasks
       module Utils
+        # rubocop:disable Metrics/AbcSize
         def create_content_block!(space, content_block_name, current_content_blocks)
           exists_content_block = Decidim::ContentBlock.find_by(decidim_organization_id: space.organization.id,
                                                                scope_name: scope_name(space), manifest_name: content_block_name,
