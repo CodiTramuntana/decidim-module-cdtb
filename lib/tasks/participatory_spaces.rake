@@ -27,16 +27,16 @@ namespace :cdtb do
       case selected_option
       when "1"
         processed_models = [
-          "Decidim::ParticipatoryProcess"
+          Decidim::ParticipatoryProcess
         ].freeze
       when "2"
         processed_models = [
-          "Decidim::Assembly"
+          Decidim::Assembly
         ].freeze
       when "3"
         processed_models = [
-          "Decidim::ParticipatoryProcess",
-          "Decidim::Assembly"
+          Decidim::ParticipatoryProcess,
+          Decidim::Assembly
         ].freeze
       else
         return "Please, select an option"
@@ -66,16 +66,16 @@ namespace :cdtb do
       case selected_option
       when "1"
         processed_models = [
-          "Decidim::ParticipatoryProcess"
+          Decidim::ParticipatoryProcess
         ].freeze
       when "2"
         processed_models = [
-          "Decidim::Assembly"
+          Decidim::Assembly
         ].freeze
       when "3"
         processed_models = [
-          "Decidim::ParticipatoryProcess",
-          "Decidim::Assembly"
+          Decidim::ParticipatoryProcess,
+          Decidim::Assembly
         ].freeze
       else
         return "Please, select an option"

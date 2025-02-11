@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "decidim/cdtb/participatory_spaces/utils"
+require "decidim/cdtb/participatory_spaces/manages_content_blocks"
 
 module Decidim
   module Cdtb
     module ParticipatorySpaces
       # Add content blocks to participatory spaces
       class AddContentBlocks < ::Decidim::Cdtb::Task
-        include ::Decidim::Cdtb::ParticipatorySpaces::Utils
+        include ::Decidim::Cdtb::ParticipatorySpaces::ManagesContentBlocks
 
         def initialize(processed_models, content_block_names)
           progress_bar= { title: self.class.name }
@@ -22,7 +22,7 @@ module Decidim
           @num_added= @num_items= 0
 
           @processed_models.each do |model_name|
-            @num_items+= model_name.constantize.count
+            @num_items+= model_name.count
           end
           log_task_info("Adding content blocks in #{@num_items} spaces...")
         end
@@ -36,9 +36,9 @@ module Decidim
           progress_bar= context[:progress_bar]
 
           @processed_models.each do |processed_model|
-            log_task_step("Processing #{processed_model.pluralize}")
+            log_task_step("Processing #{processed_model}")
 
-            spaces = processed_model.constantize
+            spaces = processed_model
 
             @content_block_names.each do |content_block_name|
               log_task_step("Adding #{content_block_name} content block")
@@ -46,7 +46,7 @@ module Decidim
               spaces.find_each do |space|
                 current_content_blocks = current_space_content_blocks(scope_name(space), space.organization, space.id)
 
-                new_content_block = create_content_block!(space, content_block_name, current_content_blocks)
+                new_content_block = find_or_create_content_block(space, content_block_name)
                 if content_block_name == "extra_data" && space.instance_of?(Decidim::ParticipatoryProcess)
                   next if new_content_block.weight == 20
 

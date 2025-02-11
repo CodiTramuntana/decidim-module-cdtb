@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require "decidim/cdtb/participatory_spaces/utils"
+require "decidim/cdtb/participatory_spaces/manages_content_blocks"
 
 module Decidim
   module Cdtb
     module ParticipatorySpaces
       # Move images to content block for participatory spaces
       class MoveImagesToContentBlock < ::Decidim::Cdtb::Task
-        include ::Decidim::Cdtb::ParticipatorySpaces::Utils
+        include ::Decidim::Cdtb::ParticipatorySpaces::ManagesContentBlocks
 
         def initialize(processed_models)
           progress_bar= { title: self.class.name }
@@ -21,7 +21,7 @@ module Decidim
           @num_added= @num_items= 0
 
           @processed_models.each do |model_name|
-            @num_items+= model_name.constantize.count
+            @num_items+= model_name.count
           end
           log_task_info("Moving images to content block in #{@num_items} spaces...")
         end
@@ -30,18 +30,16 @@ module Decidim
           @num_items
         end
 
-        # rubocop:disable Metrics/AbcSize
         def do_execution(context)
           progress_bar= context[:progress_bar]
 
           @processed_models.each do |processed_model|
-            log_task_step("Processing #{processed_model.pluralize}")
+            log_task_step("Processing #{processed_model}")
 
-            spaces = processed_model.constantize
+            spaces = processed_model
 
             spaces.find_each do |space|
-              current_content_blocks = current_space_content_blocks(scope_name(space), space.organization, space.id)
-              image_content_block = create_content_block!(space, "hero", current_content_blocks)
+              image_content_block = find_or_create_content_block(space, "hero")
 
               next if image_content_block.images.present?
 
@@ -52,7 +50,6 @@ module Decidim
             end
           end
         end
-        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           log_task_step("#{@num_added} content blocks added")
