@@ -1,9 +1,13 @@
 ## [Unreleased]
 
+## [0.4.0] - 2025-02-10 (minor - Llefiscós però deliciós)
+
+- Add task to move images to hero content block in participatory spaces
+
 ## [0.3.0] - 2024-12-24 (minor - L'artista de la pista)
 
 - Fix YouTube embeds to Decidim v0.28 format in different places. Only YouTube is supported right now.
-- Add task to add new content blocks in participatory processes
+- Add task to add new content blocks in participatory spaces
 
 ## [0.2.1] - 2024-09-25 (patch - Una idea sobre rodes)
 
