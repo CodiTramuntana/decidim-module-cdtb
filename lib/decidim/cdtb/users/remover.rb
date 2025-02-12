@@ -26,7 +26,7 @@ module Decidim
 
           users_with_email_on_moderations = Decidim::User.where(email_on_moderations: true)
 
-          disabled_email_moderations(users_with_email_on_moderations)
+          disable_email_moderations(users_with_email_on_moderations)
 
           CSV.foreach(@csv_path, headers: true, col_sep: ",") do |row|
             user = Decidim::User.find_by(id: row[0])
@@ -39,8 +39,8 @@ module Decidim
             destroy_user(user) if block_user(user, reporter_user)
             progress_bar.increment
           end
-
-          enabled_email_moderations(users_with_email_on_moderations)
+        ensure
+          enable_email_moderations(users_with_email_on_moderations)
         end
         # rubocop:enable Metrics/AbcSize
 
@@ -50,7 +50,7 @@ module Decidim
 
         private
 
-        def disabled_email_moderations(users)
+        def disable_email_moderations(users)
           log_task_step("Disabling email on moderations...")
 
           users.find_each do |user|
@@ -59,7 +59,7 @@ module Decidim
           end
         end
 
-        def enabled_email_moderations(users)
+        def enable_email_moderations(users)
           log_task_step("Enabling email on moderations...")
 
           users.find_each do |user|
