@@ -150,7 +150,9 @@ To execute the task run:
 bundle exec rake cdtb:users:remove[spam_users.csv,reporter_user@example.org]
 ```
 
-### Participatory Spaces / Add content blocks 
+### Participatory Spaces
+
+#### Add content blocks 
 
 You can add content blocks to a participatory spaces with the content block name (manifest_name).
 This rake task affects spaces in all organizations.
@@ -217,6 +219,23 @@ bundle exec rake cdtb:participatory_spaces:add_content_blocks[extra_data]
 
 bundle exec rake cdtb:participatory_spaces:add_content_blocks[['extra_data related_documents']]
 
+```
+
+#### Move banner images to hero content block
+
+In previous versions of Decidim (0.27 and previous) banner images are in participatory space configuration. Now, this image is in a content block but for old spaces are in configuration yet.
+
+This task move the banner image to a hero content block.
+
+Spaces supported:
+
+- Decidim::ParticipatoryProcess
+- Decidim::Assembly
+
+To execute the task run:
+
+```
+bundle exec rake cdtb:participatory_spaces:move_images_to_content_block
 ```
 
 ### Upgrades:

@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require "decidim/cdtb/participatory_spaces/manages_content_blocks"
+
 module Decidim
   module Cdtb
     module ParticipatorySpaces
       # Add content blocks to participatory spaces
       class AddContentBlocks < ::Decidim::Cdtb::Task
+        include ::Decidim::Cdtb::ParticipatorySpaces::ManagesContentBlocks
+
         def initialize(processed_models, content_block_names)
           progress_bar= { title: self.class.name }
           @processed_models = processed_models
@@ -18,7 +22,7 @@ module Decidim
           @num_added= @num_items= 0
 
           @processed_models.each do |model_name|
-            @num_items+= model_name.constantize.count
+            @num_items+= model_name.count
           end
           log_task_info("Adding content blocks in #{@num_items} spaces...")
         end
@@ -32,9 +36,9 @@ module Decidim
           progress_bar= context[:progress_bar]
 
           @processed_models.each do |processed_model|
-            log_task_step("Processing #{processed_model.pluralize}")
+            log_task_step("Processing #{processed_model}")
 
-            spaces = processed_model.constantize
+            spaces = processed_model
 
             @content_block_names.each do |content_block_name|
               log_task_step("Adding #{content_block_name} content block")
@@ -42,7 +46,7 @@ module Decidim
               spaces.find_each do |space|
                 current_content_blocks = current_space_content_blocks(scope_name(space), space.organization, space.id)
 
-                new_content_block = create_content_block!(space, content_block_name, current_content_blocks)
+                new_content_block = find_or_create_content_block(space, content_block_name)
                 if content_block_name == "extra_data" && space.instance_of?(Decidim::ParticipatoryProcess)
                   next if new_content_block.weight == 20
 
@@ -55,30 +59,11 @@ module Decidim
             end
           end
         end
+        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           log_task_step("#{@num_added} content blocks added")
         end
-
-        def create_content_block!(space, content_block_name, current_content_blocks)
-          exists_content_block = Decidim::ContentBlock.find_by(decidim_organization_id: space.organization.id,
-                                                               scope_name: scope_name(space), manifest_name: content_block_name,
-                                                               scoped_resource_id: space.id)
-
-          return exists_content_block if exists_content_block.present?
-
-          weight = (current_content_blocks.last.weight + 1) * 10
-          log_task_step("Adding #{content_block_name} to #{space.slug}[#{space.id}]")
-          Decidim::ContentBlock.create(
-            decidim_organization_id: space.organization.id,
-            weight: weight,
-            scope_name: scope_name(space),
-            scoped_resource_id: space.id,
-            manifest_name: content_block_name,
-            published_at: Time.current
-          )
-        end
-        # rubocop:enable Metrics/AbcSize
 
         # +extra_data+ content block usually be down of hero image, therefore, it's weight is 20 and all others content blocks
         # go one position down added 10
@@ -92,24 +77,6 @@ module Decidim
 
             content_block.update(weight: content_block.weight + 10)
           end
-        end
-
-        def current_space_content_blocks(scope_name, organization, scoped_resource_id)
-          Decidim::ContentBlock.for_scope(scope_name, organization: organization).where(scoped_resource_id: scoped_resource_id)
-        end
-
-        # --------------------------------------------------
-        private
-
-        # --------------------------------------------------
-
-        def manifest_for(resource)
-          return resource.manifest if resource.is_a? Decidim::Participable
-          return resource.resource_manifest if resource.is_a? Decidim::Resourceable
-        end
-
-        def scope_name(space)
-          manifest_for(space).content_blocks_scope_name
         end
       end
     end
