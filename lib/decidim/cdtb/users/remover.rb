@@ -20,8 +20,13 @@ module Decidim
           File.open(@csv_path).readlines.size - 1
         end
 
+        # rubocop:disable Metrics/AbcSize
         def do_execution(context)
           progress_bar = context[:progress_bar]
+
+          users_with_email_on_moderations = Decidim::User.where(email_on_moderations: true)
+
+          disable_email_moderations(users_with_email_on_moderations)
 
           CSV.foreach(@csv_path, headers: true, col_sep: ",") do |row|
             user = Decidim::User.find_by(id: row[0])
@@ -34,13 +39,34 @@ module Decidim
             destroy_user(user) if block_user(user, reporter_user)
             progress_bar.increment
           end
+        ensure
+          enable_email_moderations(users_with_email_on_moderations)
         end
+        # rubocop:enable Metrics/AbcSize
 
         def end_execution(_ctx)
           log_task_step("#{@num_applied} users removed")
         end
 
         private
+
+        def disable_email_moderations(users)
+          log_task_step("Disabling email on moderations...")
+
+          users.find_each do |user|
+            user.email_on_moderations = false
+            user.save(validate: false)
+          end
+        end
+
+        def enable_email_moderations(users)
+          log_task_step("Enabling email on moderations...")
+
+          users.find_each do |user|
+            user.email_on_moderations = true
+            user.save(validate: false)
+          end
+        end
 
         def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|

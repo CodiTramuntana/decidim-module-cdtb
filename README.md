@@ -142,12 +142,12 @@ You can delete users through a CSV with the user ID and a reporter user mailer. 
 
 This task reports and hide the user's comments, blocks the user, and finally deletes the user.
 
-The CSV will have a header and one column with the user ID.
+The CSV will have a header and one column with the user ID and must be separated by ",".
 
 To execute the task run:
 
 ```
-bundle exec rake cdtb:users:remove[spam_users.csv, reporter_user@example.org]
+bundle exec rake cdtb:users:remove[spam_users.csv,reporter_user@example.org]
 ```
 
 ### Participatory Spaces
