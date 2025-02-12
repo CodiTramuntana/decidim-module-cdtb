@@ -3,6 +3,7 @@
 ## [0.4.0] - 2025-02-10 (minor - Llefiscós però deliciós)
 
 - Add task to move images to hero content block in participatory spaces
+- Improve remove users task disabling and enabling email on moderations
 
 ## [0.3.0] - 2024-12-24 (minor - L'artista de la pista)
 
