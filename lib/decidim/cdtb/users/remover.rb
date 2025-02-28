@@ -24,7 +24,7 @@ module Decidim
         def do_execution(context)
           progress_bar = context[:progress_bar]
 
-          users_with_email_on_moderations = Decidim::User.where(email_on_moderations: true)
+          users_with_email_on_moderations = Decidim::User.where(email_on_moderations: true).pluck(:email)
 
           disable_email_moderations(users_with_email_on_moderations)
 
@@ -50,8 +50,10 @@ module Decidim
 
         private
 
-        def disable_email_moderations(users)
+        def disable_email_moderations(users_email)
           log_task_step("Disabling email on moderations...")
+
+          users = Decidim::User.where(email: users_email)
 
           users.find_each do |user|
             user.email_on_moderations = false
@@ -59,8 +61,10 @@ module Decidim
           end
         end
 
-        def enable_email_moderations(users)
+        def enable_email_moderations(users_email)
           log_task_step("Enabling email on moderations...")
+
+          users = Decidim::User.where(email: users_email)
 
           users.find_each do |user|
             user.email_on_moderations = true
