@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.2] - 2025-04-23 (minor -  Sant Jordi)
+
+- Add task to export the list of admins.
+
 ## [0.4.1] - 2025-02-10 (patch -  Afamada i enfadada)
 
 - Fix error in disabling/enabling emails on remove users task
