@@ -221,11 +221,26 @@ bundle exec rake cdtb:participatory_spaces:add_content_blocks[['extra_data relat
 
 ```
 
+##### Usually executed when upgrading to Decidim 0.28
+
+To add extra_data and related_documents to content blocks in participatory spaces
+
+```
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[extra_data]
+bundle exec rake cdtb:participatory_spaces:add_content_blocks[related_documents]
+```
+
+To move images to a new content block in participatory spaces
+
+```
+bundle exec rake cdtb:participatory_spaces:move_images_to_content_block
+```
+
 #### Move banner images to hero content block
 
 In previous versions of Decidim (0.27 and previous) banner images are in participatory space configuration. Now, this image is in a content block but for old spaces are in configuration yet.
 
-This task move the banner image to a hero content block.
+This task moves the banner image to a hero content block.
 
 Spaces supported:
 

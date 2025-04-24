@@ -11,6 +11,8 @@ module Decidim
 
     class Error < StandardError; end
 
+    STRFTIME_FORMAT= "%d/%m/%Y %H:%M:%S"
+
     config_accessor :spam_words do
       %w[viagra sex game free crypto crack xxx luck girls vip download]
     end
