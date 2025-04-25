@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "A gem to help managing Decidim applications."
   spec.homepage = "https://github.com/CodiTramuntana/decidim-module-cdtb"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.0.7"
+  spec.required_ruby_version = ">= 3.1.7"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = spec.homepage
