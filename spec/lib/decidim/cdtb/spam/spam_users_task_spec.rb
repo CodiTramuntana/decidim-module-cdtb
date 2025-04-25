@@ -19,7 +19,7 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
 
     context "when the user is spam suspicious" do
       let!(:user) do
-        create :user, nickname: "casinoFree", name: "casinoManager",
+        create :user, nickname: "casinofree", name: "casinoManager",
                       about: "I love free games", personal_url: "casinofree.com"
       end
 
@@ -49,7 +49,7 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
 
     context "when the user is spam suspicious" do
       let!(:user) do
-        create :user, nickname: "cryptoWave", name: "CRPW",
+        create :user, nickname: "crypto_wave", name: "CRPW",
                       about: "Do you know about cryptos?", personal_url: "crpw.com", organization: organization
       end
 
