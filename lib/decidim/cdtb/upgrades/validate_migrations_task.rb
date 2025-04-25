@@ -12,7 +12,7 @@ module Decidim
 
         def initialize
           progress_bar= { title: "Modules" }
-          super("VALIDATE MODULES MIGRATIONS", progress_bar: progress_bar)
+          super("VALIDATE MODULES MIGRATIONS", progress_bar:)
         end
 
         def prepare_execution(_ctx)

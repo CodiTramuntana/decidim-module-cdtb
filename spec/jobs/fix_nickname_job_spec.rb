@@ -6,7 +6,7 @@ RSpec.describe Cdtb::FixNicknameJob do
   subject { described_class }
 
   let(:nickname) { "spec_nickname" }
-  let!(:user) { create(:user, :confirmed, nickname: nickname) }
+  let!(:user) { create(:user, :confirmed, nickname:) }
 
   context "when the nickname is invalid" do
     let(:bad_nickname) { "spec nickname." }

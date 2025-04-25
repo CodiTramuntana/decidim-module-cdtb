@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
+RSpec.describe Decidim::Cdtb::Spam::UserSpamDetector do
   describe "#spam_user? without organization" do
     before do
       subject { described_class.new }
@@ -38,7 +38,7 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
     end
 
     context "when the user is not spam suspicious" do
-      let!(:users) { create_list :user, 6, organization: organization }
+      let!(:users) { create_list :user, 6, organization: }
 
       it "returns false" do
         subject.execute!
@@ -50,7 +50,7 @@ RSpec.describe ::Decidim::Cdtb::Spam::UserSpamDetector do
     context "when the user is spam suspicious" do
       let!(:user) do
         create :user, nickname: "crypto_wave", name: "CRPW",
-                      about: "Do you know about cryptos?", personal_url: "crpw.com", organization: organization
+                      about: "Do you know about cryptos?", personal_url: "crpw.com", organization:
       end
 
       it "returns true" do

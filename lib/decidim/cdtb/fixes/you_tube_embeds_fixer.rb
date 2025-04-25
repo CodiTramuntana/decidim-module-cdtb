@@ -23,7 +23,7 @@ module Decidim
 
         def initialize
           progress_bar= { title: self.class.name }
-          super("FIX YOUTUBE EMBEDS", progress_bar: progress_bar)
+          super("FIX YOUTUBE EMBEDS", progress_bar:)
         end
 
         attr_reader :num_fixed

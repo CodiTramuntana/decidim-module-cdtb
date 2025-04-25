@@ -12,7 +12,9 @@ gem "uri", ">= 0.13.1"
 group :development, :test do
   gem "bootsnap", require: false
   gem "byebug", platform: :mri
-  gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION, { github: "CodiTramuntana/decidim", branch: "release/0.28-stable", require: true }.freeze
+  gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION,
+      { github: "CodiTramuntana/decidim", branch: "release/0.28-stable", require: true }.freeze
+  gem "faker"
   gem "letter_opener_web"
   gem "listen"
 end

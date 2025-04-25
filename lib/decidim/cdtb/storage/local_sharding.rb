@@ -11,7 +11,7 @@ module Decidim
       class LocalSharding < ::Decidim::Cdtb::Task
         def initialize
           progress_bar= { title: "ActiveStorage::Blob" }
-          super("S3 to local: DO SHARDING", progress_bar: progress_bar)
+          super("S3 to local: DO SHARDING", progress_bar:)
         end
 
         def prepare_execution(_ctx)

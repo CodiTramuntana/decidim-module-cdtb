@@ -11,7 +11,7 @@ module Decidim
           @query= Decidim::User.where.not("nickname ~ ?", regex)
 
           progress_bar= { title: "Decidim::User" }
-          super("FIX NICKNAMES", progress_bar: progress_bar)
+          super("FIX NICKNAMES", progress_bar:)
         end
 
         def prepare_execution(_ctx)

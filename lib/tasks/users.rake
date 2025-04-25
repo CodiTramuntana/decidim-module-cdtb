@@ -8,7 +8,7 @@ namespace :cdtb do
       Fix Decidim::User's nicknames.
     EODESC
     task fix_nicknames: [:environment] do
-      fixer= ::Decidim::Cdtb::Fixes::NicknameFixer.new
+      fixer= Decidim::Cdtb::Fixes::NicknameFixer.new
       fixer.execute!
     end
 
@@ -16,7 +16,7 @@ namespace :cdtb do
       Remove Decidim::User's by IDs in a CSV.
     EODESC
     task :remove, %i[csv_path reporter_user_email] => [:environment] do |_taks, args|
-      service = ::Decidim::Cdtb::Users::Remover.new(args.csv_path, args.reporter_user_email)
+      service = Decidim::Cdtb::Users::Remover.new(args.csv_path, args.reporter_user_email)
       service.execute!
     end
 
@@ -30,7 +30,7 @@ namespace :cdtb do
       filename= "admins"
 
       if organization_id.present?
-        query= query.where(organization_id: organization_id)
+        query= query.where(organization_id:)
         filename+= "-org#{organization_id}"
       end
 

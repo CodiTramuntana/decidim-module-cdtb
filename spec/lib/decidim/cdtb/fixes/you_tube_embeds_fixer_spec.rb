@@ -6,7 +6,7 @@ require "decidim/debates/test/factories"
 require "decidim/assemblies/test/factories"
 require "decidim/participatory_processes/test/factories"
 
-RSpec.describe ::Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
+RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
   subject { described_class.new }
 
   context "with one model of each class" do
@@ -93,7 +93,7 @@ RSpec.describe ::Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
         EOSD
       }
     end
-    let!(:assembly) { create(:assembly, short_description: short_description) }
+    let!(:assembly) { create(:assembly, short_description:) }
 
     it "fixes the whole attribute" do
       subject.execute!

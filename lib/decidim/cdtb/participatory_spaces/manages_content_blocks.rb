@@ -18,7 +18,7 @@ module Decidim
           log_task_step("Adding #{content_block_name} to #{space.slug}[#{space.id}]")
           Decidim::ContentBlock.create(
             decidim_organization_id: space.organization.id,
-            weight: weight,
+            weight:,
             scope_name: scope_name(space),
             scoped_resource_id: space.id,
             manifest_name: content_block_name,
@@ -39,7 +39,7 @@ module Decidim
         end
 
         def current_space_content_blocks(scope_name, organization, scoped_resource_id)
-          Decidim::ContentBlock.for_scope(scope_name, organization: organization).where(scoped_resource_id: scoped_resource_id)
+          Decidim::ContentBlock.for_scope(scope_name, organization:).where(scoped_resource_id:)
         end
 
         def manifest_for(resource)

@@ -2,14 +2,14 @@
 
 require "spec_helper"
 
-RSpec.describe ::Decidim::Cdtb::Upgrades::ValidateMigrationsTask do
+RSpec.describe Decidim::Cdtb::Upgrades::ValidateMigrationsTask do
   subject { described_class.new }
 
   describe "#pending_migrations?" do
     before do
       step_double= double("InstallGemMigrationsStep double")
       expect(step_double).to receive(:install!).with(anything).and_return(output)
-      expect(::Decidim::Cdtb::Upgrades::InstallGemMigrationsStep).to receive(:new).and_return(step_double)
+      expect(Decidim::Cdtb::Upgrades::InstallGemMigrationsStep).to receive(:new).and_return(step_double)
 
       subject.execute!
     end

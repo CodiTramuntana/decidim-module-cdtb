@@ -8,7 +8,7 @@ module Decidim
       class UpgradeModulesTask < ::Decidim::Cdtb::Task
         def initialize
           progress_bar= { title: "Modules" }
-          super("UPGRADE MODULES", progress_bar: progress_bar)
+          super("UPGRADE MODULES", progress_bar:)
         end
 
         def prepare_execution(_ctx)
