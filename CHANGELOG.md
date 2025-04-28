@@ -1,8 +1,11 @@
 ## [Unreleased]
 
-## [0.4.2] - 2025-04-23 (minor -  Sant Jordi)
+## [0.5.0] - 2025-04-28 (minor - Unes roques molt gracioses)
 
 - Add task to export the list of admins.
+- Upgrade Ruby to 3.1.7.
+- Increase minimum Decidim version to v0.28.0.
+- Refactor nickname fixer to only fix users with bad nicknames. Do not iterate over all users.
 
 ## [0.4.1] - 2025-02-10 (patch -  Afamada i enfadada)
 

@@ -51,7 +51,7 @@ namespace :cdtb do
                             else
                               Decidim::Organization.find(arguments.first)
                             end
-      handler.with_context(current_organization: current_organization)
+      handler.with_context(current_organization:)
 
       credentials= arguments.map { |arg| arg.split(":") }
       puts "Setting credentials: #{credentials}"

@@ -7,12 +7,15 @@ module Decidim
       #
       class NicknameFixer < ::Decidim::Cdtb::Task
         def initialize
+          regex= Decidim::UserBaseEntity::REGEXP_NICKNAME.source.gsub("\\z", "\\Z")
+          @query= Decidim::User.where.not("nickname ~ ?", regex)
+
           progress_bar= { title: "Decidim::User" }
-          super("FIX NICKNAMES", progress_bar: progress_bar)
+          super("FIX NICKNAMES", progress_bar:)
         end
 
         def prepare_execution(_ctx)
-          @num_users= Decidim::User.count
+          @num_users= @query.count
           log_task_info("Checking #{@num_users} users...")
         end
 
@@ -23,7 +26,7 @@ module Decidim
         def do_execution(context)
           progress_bar= context[:progress_bar]
 
-          Decidim::User.find_each do |user|
+          @query.find_each do |user|
             Decidim::User.validators_on(:nickname).each do |validator|
               validator.validate_each(user, :nickname, user.nickname)
             end

@@ -11,7 +11,7 @@ module Decidim
           @csv_path = csv_path
           @reporter_user_email = reporter_user_email
           progress_bar = { title: "Decidim::User" }
-          super("USER REMOVER", progress_bar: progress_bar)
+          super("USER REMOVER", progress_bar:)
         end
 
         def prepare_execution(_ctx); end

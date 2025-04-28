@@ -12,7 +12,7 @@ module Decidim
         def initialize(processed_models)
           progress_bar= { title: self.class.name }
           @processed_models = processed_models
-          super("MOVING IMAGES...", progress_bar: progress_bar)
+          super("MOVING IMAGES...", progress_bar:)
         end
 
         attr_reader :num_added

@@ -7,21 +7,21 @@ gemspec
 
 require_relative "lib/decidim/cdtb/version"
 
-# temporal solution while gems embrace new psych 4 (the default in Ruby 3.1) behavior.
-gem "psych", "< 4"
 gem "uri", ">= 0.13.1"
 
 group :development, :test do
   gem "bootsnap", require: false
   gem "byebug", platform: :mri
-  gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION, require: true
+  gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION,
+      { github: "CodiTramuntana/decidim", branch: "release/0.28-stable", require: true }.freeze
+  gem "faker"
   gem "letter_opener_web"
   gem "listen"
 end
 
 group :development do
   gem "rake", "~> 13.0"
-  gem "rubocop"
+  gem "rubocop", "~>1.50.0"
 end
 
 group :test do

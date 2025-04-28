@@ -17,7 +17,7 @@ module Decidim
         def initialize(organization = nil)
           @organization = organization
           progress_bar = { title: "Decidim::User" }
-          super("SPAM DETECTOR", progress_bar: progress_bar)
+          super("SPAM DETECTOR", progress_bar:)
         end
 
         def prepare_execution(_ctx)

@@ -15,7 +15,7 @@ namespace :cdtb do
         exit(-1)
       end
 
-      fixer= ::Decidim::Cdtb::Fixes::YouTubeEmbedsFixer.new
+      fixer= Decidim::Cdtb::Fixes::YouTubeEmbedsFixer.new
       fixer.execute!
     end
   end

@@ -6,7 +6,7 @@ namespace :cdtb do
     task :users, %i[org_id] => :environment do |_task, args|
       organization = args.org_id.present? ? Decidim::Organization.find(args.org_id) : nil
 
-      detector = ::Decidim::Cdtb::Spam::UserSpamDetector.new(organization)
+      detector = Decidim::Cdtb::Spam::UserSpamDetector.new(organization)
       detector.execute!
     end
   end

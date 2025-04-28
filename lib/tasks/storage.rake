@@ -5,7 +5,7 @@
 #
 namespace :cdtb do
   require "decidim/cdtb/tasks_utils"
-  include ::Decidim::Cdtb::TasksUtils
+  include Decidim::Cdtb::TasksUtils
   require "decidim/cdtb/storage/local_sharding"
 
   # To migrate from S3 to local storage.

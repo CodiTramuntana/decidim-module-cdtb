@@ -42,7 +42,7 @@ namespace :cdtb do
         return "Please, select an option"
       end
 
-      adder = ::Decidim::Cdtb::ParticipatorySpaces::AddContentBlocks.new(processed_models, content_block_names)
+      adder = Decidim::Cdtb::ParticipatorySpaces::AddContentBlocks.new(processed_models, content_block_names)
       adder.execute!
     end
 
@@ -81,7 +81,7 @@ namespace :cdtb do
         return "Please, select an option"
       end
 
-      adder = ::Decidim::Cdtb::ParticipatorySpaces::MoveImagesToContentBlock.new(processed_models)
+      adder = Decidim::Cdtb::ParticipatorySpaces::MoveImagesToContentBlock.new(processed_models)
       adder.execute!
     end
   end

@@ -5,7 +5,7 @@
 #
 namespace :cdtb do
   require "decidim/cdtb/tasks_utils"
-  include ::Decidim::Cdtb::TasksUtils
+  include Decidim::Cdtb::TasksUtils
 
   desc <<~EODESC
     Finds information about the Organization, or Organizations, searching by the :host_term argument ignorecase.

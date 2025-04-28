@@ -13,7 +13,7 @@ module Decidim
           progress_bar= { title: self.class.name }
           @processed_models = processed_models
           @content_block_names = content_block_names
-          super("ADD CONTENT BLOCKS", progress_bar: progress_bar)
+          super("ADD CONTENT BLOCKS", progress_bar:)
         end
 
         attr_reader :num_added
