@@ -36,7 +36,10 @@ module Decidim
                                                   organization: user.organization)
             comments = Decidim::Comments::Comment.where(decidim_author_id: user.id)
             manage_comments(comments, user, reporter_user) unless comments.empty?
-            destroy_user(user) if block_user(user, reporter_user)
+            if block_user(user, reporter_user)
+              remove_action_logs_by(user)
+              destroy_user(user)
+            end
             progress_bar.increment
           end
         ensure
@@ -53,28 +56,18 @@ module Decidim
         def disable_email_moderations(users_emails)
           log_task_step("Disabling email on moderations...")
 
-          users = Decidim::User.where(email: users_emails)
-
-          users.find_each do |user|
-            user.email_on_moderations = false
-            user.save(validate: false)
-          end
+          Decidim::User.where(email: users_emails).update_all(email_on_moderations: false)
         end
 
         def enable_email_moderations(users_emails)
           log_task_step("Enabling email on moderations...")
 
-          users = Decidim::User.where(email: users_emails)
-
-          users.find_each do |user|
-            user.email_on_moderations = true
-            user.save(validate: false)
-          end
+          Decidim::User.where(email: users_emails).update_all(email_on_moderations: true)
         end
 
         def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|
-            report_comment(comment, user, reporter_user)
+            report_comment(comment, user, reporter_user) unless comment.reported?
             hide_comment(comment, user, reporter_user) unless comment.hidden?
           end
         end
@@ -162,6 +155,12 @@ module Decidim
             current_user: reporter_user,
             current_participatory_space: comment.participatory_space
           }
+        end
+
+        def remove_action_logs_by(user)
+          puts "Removing ActionLog from user #{user.id}..."
+
+          ActiveRecord::Base.connection.execute("DELETE FROM decidim_action_logs WHERE decidim_user_id = #{user.id}")
         end
       end
       # rubocop:enable Metrics/ClassLength

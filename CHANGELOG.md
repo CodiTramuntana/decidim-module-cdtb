@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.5.1] - 2025-04-14 (minor - Diferents però igual)
+
+- Add remove ActionLogs of users on remove users task.
+- Fix error on add content blocks task.
+
 ## [0.5.0] - 2025-04-28 (minor - Unes roques molt gracioses)
 
 - Add task to export the list of admins.
