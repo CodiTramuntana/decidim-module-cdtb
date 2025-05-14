@@ -73,6 +73,7 @@ module Decidim
 
           current_content_blocks.each do |content_block|
             # hero is usually the first content block
+            next if content_block.nil?
             next if content_block == extra_data_content_block || content_block.manifest_name == "hero"
 
             content_block.update(weight: content_block.weight + 10)
