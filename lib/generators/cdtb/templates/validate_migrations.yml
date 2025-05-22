@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:11
+        image: postgres:16
         ports: ["5432:5432"]
         options: >-
           --health-cmd pg_isready
@@ -36,7 +36,7 @@ jobs:
       SECRET_KEY_BASE: "secret_key_base"
 
     steps:
-      - uses: actions/checkout@v2.0.0
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
       - uses: ruby/setup-ruby@master
@@ -44,7 +44,7 @@ jobs:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
       - name: Recover Ruby dependency cache
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         with:
           path: ./vendor/bundle
           key: ${{ runner.OS }}-app-rubydeps-${{ hashFiles('Gemfile.lock') }}
@@ -56,7 +56,7 @@ jobs:
         run: bundle config set --local path 'vendor/bundle'
 
       - name: Install Ruby deps
-        uses: nick-invision/retry@v2
+        uses: nick-fields/retry@v3
         with:
           timeout_minutes: 10
           max_attempts: 3
