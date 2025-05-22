@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.5.2] - 2025-05-23 (patch - Sense por ni flotador)
+
+- Update validate_migrations generator template.
+
 ## [0.5.1] - 2025-04-14 (minor - Diferents però igual)
 
 - Add remove ActionLogs of users on remove users task.
