@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Decidim::Cdtb::Spam::UserSpamDetector do
+RSpec.describe Decidim::Cdtb::Spam::SpamUsersDetector do
   describe "#spam_user? without organization" do
     before do
       subject { described_class.new }

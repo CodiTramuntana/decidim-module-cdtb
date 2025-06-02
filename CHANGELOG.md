@@ -3,6 +3,7 @@
 ## [0.5.2] - 2025-05-23 (patch - Sense por ni flotador)
 
 - Update validate_migrations generator template.
+- Add last_sign_in_at to spam users detector.
 
 ## [0.5.1] - 2025-04-14 (minor - Diferents però igual)
 
