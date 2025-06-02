@@ -7,7 +7,7 @@ module Decidim
     module Spam
       # Detect spam behavior in users
       #
-      class UserSpamDetector < ::Decidim::Cdtb::Task
+      class SpamUsersDetector < ::Decidim::Cdtb::Task
         # rubocop:disable Style/RedundantRegexpEscape
         URL_REGEX = %r{(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|
         www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|
@@ -44,7 +44,7 @@ module Decidim
           filepath= Rails.env.test? ? "tmp/#{filename}" : filename
           CSV.open(filepath, "w") do |csv|
             csv_headers = ["ID", "Is suspicious?", "Name", "Email", "Nickname", "Personal URL", "About",
-                           "Organization ID", "Organization Name"]
+                           "Organization ID", "Organization Name", "Last Sign In At"]
             csv << csv_headers
 
             @users.find_each do |user|
@@ -56,7 +56,7 @@ module Decidim
               end
 
               csv << [user.id, suspicious, user.name, user.email, user.nickname, user.personal_url, user.about,
-                      user.organization.id, user.organization.name]
+                      user.organization.id, user.organization.name, user.last_sign_in_at&.strftime(Decidim::Cdtb::STRFTIME_FORMAT)]
 
               progress_bar.increment
             end
