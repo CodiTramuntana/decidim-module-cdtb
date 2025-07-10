@@ -12,8 +12,10 @@ Install the gem and add to the application's Gemfile by executing:
 
 Install CI tests on your app with:
 
-    $ bin/rails generate cdtb:validate_migrations_ci
-
+    $ bin/rails g cdtb:github_actions:github_actions ci_app
+    $ bin/rails g cdtb:github_actions:github_actions linters
+    $ bin/rails g cdtb:github_actions:github_actions validate_migrations
+    $ bin/rails g cdtb:github_actions:github_actions zeitwerk
 
 ## Usage
 

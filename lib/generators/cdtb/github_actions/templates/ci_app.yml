@@ -1,0 +1,92 @@
+name: "[CI] App"
+
+on:
+  push:
+    branches:
+      - master
+      - release/*
+      - "*-stable"
+  pull_request:
+
+env:
+  RUBY_VERSION: 3.1.7
+  NODE_VERSION: 16.9.1
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        env:
+          POSTGRES_PASSWORD: postgres
+      redis:
+        image: redis:3.2-alpine
+        ports: ["6379:6379"]
+    env:
+      DB_TEST_DATABASE: app-test
+      DB_DATABASE: app
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: localhost
+      SECRET_KEY_BASE: "secret_key_base"
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - uses: ruby/setup-ruby@master
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      # Workaround https://github.com/decidim/decidim/issues/12369
+      - uses: nanasess/setup-chromedriver@v2
+        with:
+          chromedriver-version: 119.0.6045.105
+
+      - name: List Chrome
+        run: apt list --installed | grep chrome
+
+      - name: Remove Chrome
+        run: sudo apt remove google-chrome-stable
+
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: 119.0.6045.105
+
+      - name: Recover Ruby dependency cache
+        uses: actions/cache@v4
+        with:
+          path: ./vendor/bundle
+          key: ${{ runner.OS }}-app-rubydeps-${{ hashFiles('Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-app-rubydeps-${{ env.cache-name }}-
+            ${{ runner.OS }}-app-rubydeps-
+
+      - name: Set bundle local config vendor/bundle path
+        run: bundle config set --local path 'vendor/bundle'
+
+      - name: Install Ruby deps
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 10
+          max_attempts: 3
+          retry_on: error
+          command: bundle install --jobs 4 --retry 3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm install
+      - run: bundle exec rake db:test:prepare
+        name: Setup database
+      - run: bundle exec rspec
+        name: Run specs
