@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [0.5.3] - 2025-07-10 (patch - Aperitius explosius)
+
+- Add "cdtb" in RackAttack logs to ease finding them.
+- Optimize Users::Remover task, retrieve reporter_user only once
+- Update way of retrieving manifest form attributes on census task
+
 ## [0.5.2] - 2025-05-23 (patch - Sense por ni flotador)
 
 - Update validate_migrations generator template.

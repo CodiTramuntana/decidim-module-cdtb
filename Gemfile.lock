@@ -141,7 +141,7 @@ GIT
 PATH
   remote: .
   specs:
-    decidim-cdtb (0.5.2)
+    decidim-cdtb (0.5.3)
       decidim (>= 0.28.0)
       rails (>= 6)
       ruby-progressbar
