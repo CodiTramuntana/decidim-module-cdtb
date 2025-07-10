@@ -11,7 +11,7 @@ namespace :cdtb do
       puts "Verification Handlers in this Decidim application:"
       Decidim.authorization_handlers.each do |manifest|
         attrs= if manifest.form.present?
-                 manifest.form.constantize.attribute_set.to_a.map(&:name).excluding(:id, :user, :handler_name).join(", ")
+                 manifest.form.constantize.attribute_names.excluding("id", "user", "handler_name").join(", ")
                else
                  "No form."
                end
