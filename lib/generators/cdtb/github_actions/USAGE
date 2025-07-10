@@ -1,0 +1,14 @@
+Description:
+    Installs a GitHub workflow to validate that all migrations from all engines have been installed
+
+    Available workflows:
+    - linters: Analizes app artifacts with Rubocop.
+    - ci_app: Runs Rspec specs for the Rails app.
+    - validate_migrations: Validates that the app has the migrations from all gems already installed.
+    - zeitwerk: Cheks that all artifacts accomplish with Zeitwerk's loading rules.
+
+Example:
+    rails generate cdtb:github_actions:github_actions validate_migrations
+
+    This will create:
+        .github/workflows/validate_migrations.yml

@@ -26,7 +26,7 @@ module Decidim
           progress_bar = context[:progress_bar]
 
           reporter_user = @organization.users.find_by(email: @reporter_user_email,
-                                                  organization: user.organization)
+                                                      organization: user.organization)
 
           emails_on_moderations = @organization.users.where(email_on_moderations: true).pluck(:email)
 
