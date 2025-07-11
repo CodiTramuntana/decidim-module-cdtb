@@ -1,5 +1,7 @@
 ## [Unreleased]
 
+- Use `main` as default git branch in CI generators
+
 ## [0.5.3] - 2025-07-10 (patch - Aperitius explosius)
 
 - Add "cdtb" in RackAttack logs to ease finding them.
