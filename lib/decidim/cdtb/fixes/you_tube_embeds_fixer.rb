@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# require "decidim"
-# require "decidim/assembly"
-# require "decidim/participatory_process"
-# require "decidim/meetings/meeting"
-# require "decidim/debates/debate"
-# require "decidim/pages/page"
-
 module Decidim
   module Cdtb
     module Fixes
