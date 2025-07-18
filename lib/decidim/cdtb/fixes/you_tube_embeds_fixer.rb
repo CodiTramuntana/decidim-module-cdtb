@@ -88,10 +88,10 @@ module Decidim
             iframe= div.css("iframe").first
 
             regexp_match= if div["data-video-embed"].present?
-              find_localized_embed_from_video_btn(div)
-            else
-              find_localized_embed_from_embed_btn(iframe)
-            end
+                            find_localized_embed_from_video_btn(div)
+                          else
+                            find_localized_embed_from_embed_btn(iframe)
+                          end
 
             next unless regexp_match
 
