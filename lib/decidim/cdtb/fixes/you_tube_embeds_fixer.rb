@@ -95,7 +95,7 @@ module Decidim
 
             next unless regexp_match
 
-            Rails.logger.debug("EMBED::EmbedBtn:::: #{div.class} => #{div}")
+            Rails.logger.debug("EMBED:::: #{div.class} => #{div}")
 
             yt_id= regexp_match["yt_id"]
             div["data-video-embed"]= "https://www.youtube.com/watch?v=#{yt_id}"
