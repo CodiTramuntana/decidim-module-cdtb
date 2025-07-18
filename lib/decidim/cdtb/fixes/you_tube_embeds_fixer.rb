@@ -92,14 +92,20 @@ module Decidim
           Rails.logger.debug "=> #{divs_w_embed.size} => #{content}"
 
           divs_w_embed.map do |div|
-            regexp_match= div["data-video-embed"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+            iframe= div.css("iframe").first
+
+            regexp_match= if div["data-video-embed"].present?
+              find_localized_embed_from_video_btn(div)
+            else
+              find_localized_embed_from_embed_btn(iframe)
+            end
+
             next unless regexp_match
 
-            Rails.logger.debug("EMBED:::: #{div.class} => #{div}")
+            Rails.logger.debug("EMBED::EmbedBtn:::: #{div.class} => #{div}")
 
             yt_id= regexp_match["yt_id"]
             div["data-video-embed"]= "https://www.youtube.com/watch?v=#{yt_id}"
-            iframe= div.css("iframe").first
             iframe["src"]= "https://www.youtube-nocookie.com/embed/#{yt_id}?cc_load_policy=1&modestbranding=1"
             fixed_div= div
             Rails.logger.debug("FIXED TO: #{fixed_div.to_html}")
@@ -109,6 +115,14 @@ module Decidim
           end
         end
         # rubocop: enable Metrics/AbcSize
+
+        def find_localized_embed_from_video_btn(div)
+          div["data-video-embed"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+        end
+
+        def find_localized_embed_from_embed_btn(iframe)
+          iframe["src"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+        end
       end
     end
   end

@@ -37,7 +37,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
         end
       end
 
-      context "when all contain embeds" do
+      context "when all contain embeds added via 'add video' editor button" do
         before do
           [meeting, debate, page, assembly].each do |model|
             old_format_embed= <<~EOEMBED
@@ -47,6 +47,36 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
                   </iframe>
                 </div>
               </div>
+            EOEMBED
+            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs.each do |attrib|
+              i18n_content= model.send(attrib)
+              i18n_content["ca"]= "#{i18n_content["ca"]}#{old_format_embed}"
+            end
+            model.save!(validate: false)
+          end
+        end
+
+        it "does fix all models" do
+          subject.execute!
+          expect(subject.num_fixed).to be 4
+          [meeting, debate, page, assembly].each do |model|
+            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs.each do |attrib|
+              i18n_content= model.reload.send(attrib)
+              expect(i18n_content["ca"]).to_not include("https://www.youtube.com/embed")
+              expect(i18n_content["ca"]).to include("https://www.youtube.com/watch")
+              expect(i18n_content["ca"]).to include("https://www.youtube-nocookie.com/embed")
+            end
+          end
+        end
+      end
+
+      context "when all contain embeds added via 'add embed' editor button" do
+        before do
+          [meeting, debate, page, assembly].each do |model|
+            old_format_embed= <<~EOEMBED
+              <div class="editor-content-videoEmbed"><div><iframe src="https://www.youtube.com/embed/216hJvdMabQ?showinfo=0" title="Contingut del vídeo incrustat" frameborder="0" allowfullscreen="true" scrolling="no"></iframe></div></div>
             EOEMBED
             attribs= described_class::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
