@@ -9,6 +9,7 @@ module Decidim
         PROCESSED_MODELS= {
           "Decidim::Meetings::Meeting" => [:description],
           "Decidim::Debates::Debate" => %i[description instructions],
+          "Decidim::StaticPage" => [:content],
           "Decidim::Pages::Page" => [:body],
           "Decidim::Assembly" => %i[short_description description],
           "Decidim::ParticipatoryProcess" => %i[short_description description]
@@ -105,7 +106,7 @@ module Decidim
             new_content= parsed.css("body").children.to_html
             Rails.logger.debug("FIXED TO: #{new_content}")
             new_content
-          end
+          end.compact
         end
         # rubocop: enable Metrics/AbcSize
 
