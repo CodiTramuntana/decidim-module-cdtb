@@ -1,6 +1,9 @@
 ## [Unreleased]
 
+## [0.5.4] - 2025-07-10 (patch - Una festa que no resta)
+
 - Use `main` as default git branch in CI generators
+- Expand YouTube embeds fixer covered cases. Take into account embeds added via 'video' button and now also via 'embed' button.
 
 ## [0.5.3] - 2025-07-10 (patch - Aperitius explosius)
 

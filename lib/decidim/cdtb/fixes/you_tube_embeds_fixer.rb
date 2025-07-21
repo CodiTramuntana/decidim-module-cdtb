@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# require "decidim"
-# require "decidim/assembly"
-# require "decidim/participatory_process"
-# require "decidim/meetings/meeting"
-# require "decidim/debates/debate"
-# require "decidim/pages/page"
-
 module Decidim
   module Cdtb
     module Fixes
@@ -16,9 +9,11 @@ module Decidim
         PROCESSED_MODELS= {
           "Decidim::Meetings::Meeting" => [:description],
           "Decidim::Debates::Debate" => %i[description instructions],
+          "Decidim::StaticPage" => [:content],
           "Decidim::Pages::Page" => [:body],
           "Decidim::Assembly" => %i[short_description description],
-          "Decidim::ParticipatoryProcess" => %i[short_description description]
+          "Decidim::ParticipatoryProcess" => %i[short_description description],
+          "Decidim::Proposals::Proposal" => %i[body]
         }.freeze
 
         def initialize
@@ -92,23 +87,37 @@ module Decidim
           Rails.logger.debug "=> #{divs_w_embed.size} => #{content}"
 
           divs_w_embed.map do |div|
-            regexp_match= div["data-video-embed"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+            iframe= div.css("iframe").first
+
+            regexp_match= if div["data-video-embed"].present?
+                            find_localized_embed_from_video_btn(div)
+                          else
+                            find_localized_embed_from_embed_btn(iframe)
+                          end
+
             next unless regexp_match
 
             Rails.logger.debug("EMBED:::: #{div.class} => #{div}")
 
             yt_id= regexp_match["yt_id"]
             div["data-video-embed"]= "https://www.youtube.com/watch?v=#{yt_id}"
-            iframe= div.css("iframe").first
             iframe["src"]= "https://www.youtube-nocookie.com/embed/#{yt_id}?cc_load_policy=1&modestbranding=1"
             fixed_div= div
             Rails.logger.debug("FIXED TO: #{fixed_div.to_html}")
             new_content= parsed.css("body").children.to_html
             Rails.logger.debug("FIXED TO: #{new_content}")
             new_content
-          end
+          end.compact
         end
         # rubocop: enable Metrics/AbcSize
+
+        def find_localized_embed_from_video_btn(div)
+          div["data-video-embed"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+        end
+
+        def find_localized_embed_from_embed_btn(iframe)
+          iframe["src"].match(%r{https://www.youtube.com/embed/(?<yt_id>\w+)})
+        end
       end
     end
   end
