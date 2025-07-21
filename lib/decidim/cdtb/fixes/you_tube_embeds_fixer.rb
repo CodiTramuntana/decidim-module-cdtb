@@ -12,7 +12,8 @@ module Decidim
           "Decidim::StaticPage" => [:content],
           "Decidim::Pages::Page" => [:body],
           "Decidim::Assembly" => %i[short_description description],
-          "Decidim::ParticipatoryProcess" => %i[short_description description]
+          "Decidim::ParticipatoryProcess" => %i[short_description description],
+          "Decidim::Proposals::Proposal" => %i[body]
         }.freeze
 
         def initialize

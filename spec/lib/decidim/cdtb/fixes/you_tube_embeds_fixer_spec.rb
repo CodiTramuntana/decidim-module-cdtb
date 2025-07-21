@@ -5,6 +5,7 @@ require "decidim/meetings/test/factories"
 require "decidim/debates/test/factories"
 require "decidim/assemblies/test/factories"
 require "decidim/participatory_processes/test/factories"
+require "decidim/proposals/test/factories"
 
 RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
   subject { described_class.new }
@@ -20,13 +21,14 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
       )
     end
     let!(:assembly) { create(:assembly) }
+    let!(:proposal) { create(:proposal) }
 
     describe "#prepare_execution" do
       it "returns the total of models to be processed" do
         subject.prepare_execution
 
         # one for each model plus one process for each component
-        expect(subject.total_items).to be 12
+        expect(subject.total_items).to be 15
       end
     end
 
@@ -40,7 +42,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
 
       context "when all contain embeds added via 'add video' editor button" do
         before do
-          [meeting, debate, static_page, page, assembly].each do |model|
+          [meeting, debate, static_page, page, assembly, proposal].each do |model|
             old_format_embed= <<~EOEMBED
               <div class="editor-content-videoEmbed" data-video-embed="https://www.youtube.com/embed/GH#{model.id}pRgZcHB1g?showinfo=0">
                 <div>
@@ -60,8 +62,8 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
 
         it "does fix all models" do
           subject.execute!
-          expect(subject.num_fixed).to be 5
-          [meeting, debate, static_page, page, assembly].each do |model|
+          expect(subject.num_fixed).to be 6
+          [meeting, debate, static_page, page, assembly, proposal].each do |model|
             attribs= described_class::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.reload.send(attrib)
@@ -75,8 +77,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
 
       context "when all contain embeds added via 'add embed' editor button" do
         before do
-          # [meeting, debate, static_page, page, assembly].each do |model|
-          [static_page].each do |model|
+          [meeting, debate, static_page, page, assembly, proposal].each do |model|
             old_format_embed= <<~EOEMBED
               <div class="editor-content-videoEmbed"><div><iframe src="https://www.youtube.com/embed/GH#{model.id}216hJvdMabQ?showinfo=0" title="Contingut del vídeo incrustat" frameborder="0" allowfullscreen="true" scrolling="no"></iframe></div></div>
             EOEMBED
@@ -91,8 +92,8 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
 
         it "does fix all models" do
           subject.execute!
-          expect(subject.num_fixed).to be 5
-          [meeting, debate, static_page, page, assembly].each do |model|
+          expect(subject.num_fixed).to be 6
+          [meeting, debate, static_page, page, assembly, proposal].each do |model|
             attribs= described_class::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.reload.send(attrib)
