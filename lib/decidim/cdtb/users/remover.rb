@@ -7,8 +7,8 @@ module Decidim
       #
       # rubocop:disable Metrics/ClassLength
       class Remover < ::Decidim::Cdtb::Task
-        def initialize(organization, csv_path, reporter_user_email)
-          @organization= organization
+        def initialize(organization_id, csv_path, reporter_user_email)
+          @organization= Decidim::Organization.find_by(id: organization_id)
           @csv_path = csv_path
           @reporter_user_email = reporter_user_email
           progress_bar = { title: "Decidim::User" }
@@ -25,9 +25,7 @@ module Decidim
         def do_execution(context)
           progress_bar = context[:progress_bar]
 
-          reporter_user = @organization.users.find_by(email: @reporter_user_email,
-                                                      organization: user.organization)
-
+          reporter_user = Decidim::User.find_by(email: @reporter_user_email, organization: @organization)
           emails_on_moderations = @organization.users.where(email_on_moderations: true).pluck(:email)
 
           disable_email_moderations(emails_on_moderations)

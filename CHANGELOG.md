@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.5.5] - 2025-08-03 (patch - Esqueletic pero frenetic)
+
+- Fix params in Users::Remover task
+
 ## [0.5.4] - 2025-07-10 (patch - Una festa que no resta)
 
 - Use `main` as default git branch in CI generators
