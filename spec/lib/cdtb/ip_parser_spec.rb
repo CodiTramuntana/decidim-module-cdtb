@@ -3,8 +3,6 @@
 require "spec_helper"
 
 RSpec.describe Cdtb::IpParser do
-  include Cdtb::IpParser
-
   describe "::extract_ip" do
     let(:remote_addr) { "172.20.0.1" }
     let(:request_env) do
@@ -17,14 +15,14 @@ RSpec.describe Cdtb::IpParser do
     let(:request) { Rack::Request.new(request_env) }
 
     it "parses IPs from standard request .ip method" do
-      expect(extract_ip(request)).to eq("172.20.0.1")
+      expect(Cdtb::IpParser.extract_ip(request)).to eq("172.20.0.1")
     end
 
     context "with HTTP_X_FORWARDED_FOR" do
       let(:forwarded_for) { "1.2.3.4" }
 
       it "parses IPs from forwarded for header" do
-        expect(extract_ip(request)).to eq("1.2.3.4")
+        expect(Cdtb::IpParser.extract_ip(request)).to eq("1.2.3.4")
       end
     end
 
@@ -32,7 +30,7 @@ RSpec.describe Cdtb::IpParser do
       let(:remote_addr) { "1.1.1.1:1234" }
 
       it "parses IPs with port in them" do
-        expect(extract_ip(request)).to eq("1.1.1.1")
+        expect(Cdtb::IpParser.extract_ip(request)).to eq("1.1.1.1")
       end
     end
 
@@ -40,7 +38,18 @@ RSpec.describe Cdtb::IpParser do
       let(:remote_addr) { "94:e2:3c:a9:c2:48" }
 
       it "returs IPs of type inet6 as they are" do
-        expect(extract_ip(request)).to eq("94:e2:3c:a9:c2:48")
+        expect(Cdtb::IpParser.extract_ip(request)).to eq("94:e2:3c:a9:c2:48")
+      end
+    end
+
+    context "decorating Rack::Request" do
+      describe "#ip" do
+        let(:remote_addr) { "10.20.30.1:1020301" }
+
+        it "now ignores the port if set" do
+          Cdtb::IpParser.decorate_rack_request
+          expect(Rack::Request.new(request_env).ip).to eq("10.20.30.1")
+        end
       end
     end
   end

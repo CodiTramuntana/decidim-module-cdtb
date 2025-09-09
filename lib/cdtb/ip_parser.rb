@@ -3,9 +3,22 @@
 module Cdtb
   # Parses IPs from Rack::Request objects, discarding the port.
   module IpParser
+    def self.decorate_rack_request
+      Rack::Request.class_eval do
+        include Cdtb::IpParser
+
+        alias_method :original_ip_method, :ip
+
+        def ip
+          extract_ip(self)
+        end
+      end
+    end
+
     def self.extract_ip(request)
-      # take the IP either from the remote addr or from the forwarded for header
-      ip= request.ip
+      # Take the IP either from the remote addr or from the forwarded for header
+      # If Rack::Request is decorated use the original method.
+      ip= defined?(request.original_ip_method) ? request.original_ip_method : request.ip
       Rails.logger.info { ">>>>>>>>>>>>>>>>>>>> Request IP: #{ip}" }
       Rails.logger.info { ">>>>>>>>>>>>>>>>>>>> X-Forwarded-For: #{request.get_header("HTTP_X_FORWARDED_FOR")}" }
 

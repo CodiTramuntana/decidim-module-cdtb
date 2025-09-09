@@ -4,10 +4,11 @@ require "cdtb/ip_parser"
 
 unless ENV["CDTB_RACK_ATTACK_DISABLED"].to_i.positive? || %w[development test].include?(Rails.env)
   require "rack/attack"
+  Cdtb::IpParser.decorate_rack_request
 
   limit= ENV.fetch("RACK_ATTACK_THROTTLE_LIMIT", 30)
   period= ENV.fetch("RACK_ATTACK_THROTTLE_PERIOD", 60)
-  Rails.logger.info("Configuring Rack::Attack.throttle with limit: #{limit}, period: #{period}")
+  Rails.logger.info("Configuring Rack::Attack.throttle with limit for requests by ip: #{limit}, period: #{period}")
   Rack::Attack.throttle("cdtb:requests by ip", limit: limit.to_i, period: period.to_i) do |request|
     # ignore requests to assets
     next if request.path.start_with?("/rails/active_storage")
@@ -18,7 +19,7 @@ unless ENV["CDTB_RACK_ATTACK_DISABLED"].to_i.positive? || %w[development test].i
   if ENV.key?("RACK_ATTACK_THROTTLE_RANGE_LIMIT") && ENV["RACK_ATTACK_THROTTLE_RANGE_LIMIT"].to_i.positive?
     limit= ENV.fetch("RACK_ATTACK_THROTTLE_RANGE_LIMIT", 30)
     period= ENV.fetch("RACK_ATTACK_THROTTLE_RANGE_PERIOD", 60)
-    Rails.logger.info("Configuring Rack::Attack.throttle with limits for IP Ranges: #{limit}, period: #{period}")
+    Rails.logger.info("Configuring Rack::Attack.throttle with limit for IP Ranges: #{limit}, period: #{period}")
     Rack::Attack.throttle("cdtb:requests by ip range", limit: limit.to_i, period: period.to_i) do |request|
       # ignore requests to assets
       next if request.path.start_with?("/rails/active_storage")
