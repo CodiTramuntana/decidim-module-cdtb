@@ -12,7 +12,7 @@ RSpec.describe Cdtb::IpParser do
       h["HTTP_X_FORWARDED_FOR"]= forwarded_for if defined? forwarded_for
       h
     end
-    let(:request) { Rack::Request.new(request_env) }
+    let(:request) { ActionDispatch::Request.new(request_env) }
 
     it "parses IPs from standard request .ip method" do
       expect(Cdtb::IpParser.extract_ip(request)).to eq("172.20.0.1")

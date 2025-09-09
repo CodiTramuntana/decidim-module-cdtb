@@ -3,6 +3,7 @@
 ## [0.5.6] - 2025-08-11 (minor - Escola de monstres, gràcies!)
 
 - Wrap RackAttack IP related parsing into IpParser.
+- Allow to extend Rack::Request.ip_filter regex used internally by Rack::Request.trusted_proxy?(ip).
 
 ## [0.5.5] - 2025-08-03 (patch - Esquelètic pero frenètic)
 
