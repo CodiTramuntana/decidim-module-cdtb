@@ -2,6 +2,8 @@
 
 require "decidim/version"
 require "decidim/cdtb/tasks"
+require "decidim/cdtb/embeds"
+require "decidim/cdtb/fixes/base64_embeds_lister"
 
 namespace :cdtb do
   namespace :embeds do
@@ -17,6 +19,14 @@ namespace :cdtb do
 
       fixer= Decidim::Cdtb::Fixes::YouTubeEmbedsFixer.new
       fixer.execute!
+    end
+
+    desc <<~EODESC
+      List resources with base64 embeds.
+    EODESC
+    task list_embeded_base64: [:environment] do
+      lister= Decidim::Cdtb::Fixes::Base64EmbedsLister.new
+      lister.execute!
     end
   end
 end

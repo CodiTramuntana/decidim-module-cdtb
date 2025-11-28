@@ -51,7 +51,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
                 </div>
               </div>
             EOEMBED
-            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs= Decidim::Cdtb::Embeds::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.send(attrib)
               i18n_content["ca"]= "#{i18n_content["ca"]}#{old_format_embed}"
@@ -64,7 +64,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
           subject.execute!
           expect(subject.num_fixed).to be 6
           [meeting, debate, static_page, page, assembly, proposal].each do |model|
-            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs= Decidim::Cdtb::Embeds::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.reload.send(attrib)
               expect(i18n_content["ca"]).to_not include("https://www.youtube.com/embed")
@@ -81,7 +81,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
             old_format_embed= <<~EOEMBED
               <div class="editor-content-videoEmbed"><div><iframe src="https://www.youtube.com/embed/GH#{model.id}216hJvdMabQ?showinfo=0" title="Contingut del vídeo incrustat" frameborder="0" allowfullscreen="true" scrolling="no"></iframe></div></div>
             EOEMBED
-            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs= Decidim::Cdtb::Embeds::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.send(attrib)
               i18n_content["ca"]= "#{i18n_content["ca"]}#{old_format_embed}"
@@ -94,7 +94,7 @@ RSpec.describe Decidim::Cdtb::Fixes::YouTubeEmbedsFixer do
           subject.execute!
           expect(subject.num_fixed).to be 6
           [meeting, debate, static_page, page, assembly, proposal].each do |model|
-            attribs= described_class::PROCESSED_MODELS[model.class.name]
+            attribs= Decidim::Cdtb::Embeds::PROCESSED_MODELS[model.class.name]
             attribs.each do |attrib|
               i18n_content= model.reload.send(attrib)
               expect(i18n_content["ca"]).to_not include("https://www.youtube.com/embed")
