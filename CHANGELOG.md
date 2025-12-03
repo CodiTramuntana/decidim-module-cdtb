@@ -1,8 +1,12 @@
 ## [Unreleased]
 
-## [0.5.5] - 2025-08-03 (patch - Esqueletic pero frenetic)
+## [0.5.6] - 2025-12-03 (minor - Un rescat agosarat)
 
-- Fix params in Users::Remover task
+- List embeded imgs in rich text editors with Decidim::Cdtb::Fixes::Base64EmbedsLister.
+
+## [0.5.5] - 2025-08-03 (patch - Esqueletic però frenetic)
+
+- Fix params in Users::Remover task.
 
 ## [0.5.4] - 2025-07-10 (patch - Una festa que no resta)
 
@@ -21,7 +25,7 @@
 - Update validate_migrations generator template.
 - Add last_sign_in_at to spam users detector.
 
-## [0.5.1] - 2025-04-14 (minor - Diferents però igual)
+## [0.5.1] - 2025-04-14 (minor - Diferents però iguals)
 
 - Add remove ActionLogs of users on remove users task.
 - Fix error on add content blocks task.
