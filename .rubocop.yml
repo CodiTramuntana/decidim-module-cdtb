@@ -16,6 +16,10 @@ Metrics/BlockLength:
     - lib/tasks/*.rake
     - spec/**/*_spec.rb
 
+Metrics/ClassLength:
+  Enabled: true
+  Max: 200
+
 Metrics/MethodLength:
   CountComments: false
   Max: 15

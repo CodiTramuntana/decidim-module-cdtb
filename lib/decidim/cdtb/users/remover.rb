@@ -5,7 +5,6 @@ module Decidim
     module Users
       # Remove Decidim::User's
       #
-      # rubocop:disable Metrics/ClassLength
       class Remover < ::Decidim::Cdtb::Task
         def initialize(organization_id, csv_path, reporter_user_email)
           @organization= Decidim::Organization.find_by(id: organization_id)
@@ -163,7 +162,6 @@ module Decidim
           ActiveRecord::Base.connection.execute("DELETE FROM decidim_action_logs WHERE decidim_user_id = #{user.id}")
         end
       end
-      # rubocop:enable Metrics/ClassLength
     end
   end
 end

@@ -3,19 +3,9 @@
 module Decidim
   module Cdtb
     module Fixes
-      # Fixes YouTube embeds to Decidim v0.28 format in PROCESSED_MODELS.
+      # Fixes YouTube embeds to Decidim v0.28 format in Decidim::Cdtb::Embeds::PROCESSED_MODELS.
       # Only YouTube is supported right now.
       class YouTubeEmbedsFixer < ::Decidim::Cdtb::Task
-        PROCESSED_MODELS= {
-          "Decidim::Meetings::Meeting" => [:description],
-          "Decidim::Debates::Debate" => %i[description instructions],
-          "Decidim::StaticPage" => [:content],
-          "Decidim::Pages::Page" => [:body],
-          "Decidim::Assembly" => %i[short_description description],
-          "Decidim::ParticipatoryProcess" => %i[short_description description],
-          "Decidim::Proposals::Proposal" => %i[body]
-        }.freeze
-
         def initialize
           progress_bar= { title: self.class.name }
           super("FIX YOUTUBE EMBEDS", progress_bar:)
@@ -26,7 +16,7 @@ module Decidim
         def prepare_execution(_ctx = nil)
           @num_fixed= @num_items= 0
 
-          PROCESSED_MODELS.each_key do |model_class|
+          Decidim::Cdtb::Embeds::PROCESSED_MODELS.each_key do |model_class|
             @num_items+= model_class.constantize.count
           end
           log_task_info("Checking #{@num_items} models...")
@@ -39,7 +29,7 @@ module Decidim
         def do_execution(context)
           progress_bar= context[:progress_bar]
 
-          PROCESSED_MODELS.each_pair do |model_class_name, attribs|
+          Decidim::Cdtb::Embeds::PROCESSED_MODELS.each_pair do |model_class_name, attribs|
             log_task_step("Processing #{model_class_name.pluralize}")
 
             model_class= model_class_name.constantize

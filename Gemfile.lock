@@ -141,7 +141,7 @@ GIT
 PATH
   remote: .
   specs:
-    decidim-cdtb (0.5.5)
+    decidim-cdtb (0.5.6)
       decidim (>= 0.28.0)
       rails (>= 6)
       ruby-progressbar
@@ -428,7 +428,7 @@ GEM
     invisible_captcha (0.13.0)
       rails (>= 3.2.0)
     io-console (0.8.1)
-    json (2.13.0)
+    json (2.16.0)
     jwt (3.1.2)
       base64
     kaminari (1.2.2)
@@ -540,7 +540,7 @@ GEM
     parallel (1.27.0)
     parallel_tests (4.10.1)
       parallel
-    parser (3.3.8.0)
+    parser (3.3.10.0)
       ast (~> 2.4.1)
       racc
     pg (1.4.6)
@@ -555,7 +555,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
-    prism (1.4.0)
+    prism (1.6.0)
     psych (4.0.6)
       stringio
     public_suffix (6.0.2)
@@ -620,7 +620,7 @@ GEM
       ffi (~> 1.0)
     redcarpet (3.6.1)
     redis (4.8.1)
-    regexp_parser (2.10.0)
+    regexp_parser (2.11.3)
     reline (0.6.1)
       io-console (~> 0.5)
     request_store (1.5.1)
@@ -628,7 +628,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
-    rexml (3.4.1)
+    rexml (3.4.4)
     rspec (3.13.1)
       rspec-core (~> 3.13.0)
       rspec-expectations (~> 3.13.0)
@@ -670,7 +670,7 @@ GEM
       rubocop-ast (>= 1.28.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
-    rubocop-ast (1.46.0)
+    rubocop-ast (1.48.0)
       parser (>= 3.3.7.2)
       prism (~> 1.4)
     rubocop-capybara (2.21.0)
