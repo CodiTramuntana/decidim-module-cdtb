@@ -67,6 +67,18 @@ Fixes YouTube embeds to Decidim v0.28 format in different places, which at the m
 bin/rake cdtb:embeds:fix_youtube
 ```
 
+### Logging
+
+#### IP logging
+
+See `config/initializers/ip_filtering.rb` to learn how to add conditions to `Rack::Request.trusted_proxy?(ip)`.
+
+Example, to add your 10.2.0.4 proxy as a trusted proxy define the following ENV var:
+
+```
+# don't forget the OR at the beginnig
+RACK_RQ_IP_FILTER_EXT="|\A10\.2\.0\.4\Z"
+```
 
 ### Migrate ActiveStorage service from S3 to local
 

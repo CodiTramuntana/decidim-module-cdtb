@@ -6,7 +6,7 @@ require "decidim/cdtb/tasks"
 namespace :cdtb do
   namespace :participatory_spaces do
     desc <<~EODESC
-      Add content blocks to a participatory processes
+      Add content blocks to participatory processes
     EODESC
     task :add_content_blocks, [:content_block_names] => :environment do |_task, args|
       unless Decidim.version >= "0.28"
