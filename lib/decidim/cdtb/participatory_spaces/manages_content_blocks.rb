@@ -44,7 +44,8 @@ module Decidim
 
         def manifest_for(resource)
           return resource.manifest if resource.is_a? Decidim::Participable
-          return resource.resource_manifest if resource.is_a? Decidim::Resourceable
+
+          resource.resource_manifest if resource.is_a? Decidim::Resourceable
         end
 
         def scope_name(space)

@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   NewCops: enable
   Exclude:
     - bin/*
@@ -21,7 +21,7 @@ Metrics/MethodLength:
   Max: 15
   Enabled: false
 
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Enabled: false
 
 Style/StringLiterals:
