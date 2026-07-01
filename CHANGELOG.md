@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [0.6.0] - 2026-07-01 (minor - )
+
+- Bump Decidim to 0.31.0
+- Bump Ruby to 3.3.4
+- Bump Node to 22.14.0
+
 ## [0.5.6] - 2025-08-11 (minor - Escola de monstres, gràcies!)
 
 - Wrap RackAttack IP related parsing into IpParser.
