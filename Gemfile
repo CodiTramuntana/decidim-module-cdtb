@@ -14,6 +14,11 @@ group :development, :test do
   gem "byebug", platform: :mri
   gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION,
       { github: "CodiTramuntana/decidim", branch: "release/0.31-stable", require: true }.freeze
+  # required by tests in CI
+  gem "decidim-dev", Decidim::Cdtb::DECIDIM_MIN_VERSION,
+      { github: "CodiTramuntana/decidim", branch: "release/0.31-stable" }.freeze
+  gem "decidim-initiatives", Decidim::Cdtb::DECIDIM_MIN_VERSION,
+      { github: "CodiTramuntana/decidim", branch: "release/0.31-stable" }.freeze
   gem "faker"
   gem "letter_opener_web"
   gem "listen"
