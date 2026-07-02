@@ -33,5 +33,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 6"
   spec.add_dependency "ruby-progressbar"
 
+  # rubocop:disable Gemspec/DevelopmentDependencies
+  spec.add_development_dependency "decidim-dev", Decidim::Cdtb::DECIDIM_MIN_VERSION
+  # rubocop:enable Gemspec/DevelopmentDependencies
   spec.metadata["rubygems_mfa_required"] = "true"
 end
