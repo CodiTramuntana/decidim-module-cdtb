@@ -1,6 +1,6 @@
 ## [Unreleased]
 
-## [0.6.0] - 2026-07-01 (minor - )
+## [0.6.0] - 2026-07-01 (minor - Un rescat agosarat)
 
 - Bump Decidim to 0.31.0
 - Bump Ruby to 3.3.4
@@ -11,7 +11,7 @@
 - Wrap RackAttack IP related parsing into IpParser.
 - Allow to extend Rack::Request.ip_filter regex used internally by Rack::Request.trusted_proxy?(ip).
 
-## [0.5.5] - 2025-08-03 (patch - Esquelètic pero frenètic)
+## [0.5.5] - 2025-08-03 (patch - Esquelètic però frenètic)
 
 - Fix params in Users::Remover task
 
