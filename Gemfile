@@ -25,6 +25,7 @@ group :development do
 end
 
 group :test do
+  gem "minitest", "~> 5.25"
   gem "rspec", "~> 3.0"
   gem "sqlite3", "~> 1.4"
 end
