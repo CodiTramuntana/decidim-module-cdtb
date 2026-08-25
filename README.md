@@ -295,7 +295,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Run tests
 
-Node 16.9.1 is required!
+Node 18.17.1 is required!
 
 Create a dummy app:
 
