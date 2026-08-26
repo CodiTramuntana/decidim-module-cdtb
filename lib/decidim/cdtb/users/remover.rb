@@ -103,9 +103,9 @@ module Decidim
             delete_reason: "Confirmed spam suspicious"
           }
 
-          form = Decidim::DeleteAccountForm.from_params(params)
+          form = Decidim::DeleteAccountForm.from_params(params).with_context(current_user: user)
 
-          Decidim::DestroyAccount.call(user, form) do
+          Decidim::DestroyAccount.call(form) do
             on(:ok) do
               puts "OK: User #{user.id} removed"
             end

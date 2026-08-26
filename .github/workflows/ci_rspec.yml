@@ -10,8 +10,8 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.7
-  NODE_VERSION: 16.9.1
+  RUBY_VERSION: 3.2.6
+  NODE_VERSION: 18.17.1
   CI: "true"
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.1.7'
+          - '3.2.6'
     services:
       postgres:
         image: postgres:11

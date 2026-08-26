@@ -13,7 +13,7 @@ group :development, :test do
   gem "bootsnap", require: false
   gem "byebug", platform: :mri
   gem "decidim", Decidim::Cdtb::DECIDIM_MIN_VERSION,
-      { github: "CodiTramuntana/decidim", branch: "release/0.28-stable", require: true }.freeze
+      { github: "CodiTramuntana/decidim", branch: "release/0.29-stable", require: true }.freeze
   gem "faker"
   gem "letter_opener_web"
   gem "listen"
@@ -25,6 +25,7 @@ group :development do
 end
 
 group :test do
+  gem "minitest", "~> 5.25"
   gem "rspec", "~> 3.0"
   gem "sqlite3", "~> 1.4"
 end

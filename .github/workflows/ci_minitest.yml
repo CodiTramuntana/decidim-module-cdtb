@@ -10,7 +10,7 @@ on:
   pull_request:
 
 env:
-  RUBY_VERSION: 3.1.7
+  RUBY_VERSION: 3.2.6
   CI: "true"
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         ruby:
-          - '3.1.7'
+          - '3.2.6'
     env:
       RUBYOPT: '-W:no-deprecated'
     steps:

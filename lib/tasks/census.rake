@@ -56,7 +56,7 @@ namespace :cdtb do
       credentials= arguments.map { |arg| arg.split(":") }
       puts "Setting credentials: #{credentials}"
       credentials.each do |attr, val|
-        handler.send("#{attr}=".to_sym, val)
+        handler.send(:"#{attr}=", val)
       end
     end
 

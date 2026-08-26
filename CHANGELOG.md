@@ -1,6 +1,11 @@
 ## [Unreleased]
 
-## [0.5.6] - 2025-08-11 (minor - Escola de monstres, gràcies!)
+## [0.6.0] - 2026-08-25 (minor)
+
+- Adapt `Decidim::DestroyAccount` call in Users::Remover task: pass a single form with `current_user` in context instead of `(user, form)`.
+- Update minimum Decidim version to 0.29 
+
+## [0.5.6] - 2025-08-11 (patch - Escola de monstres, gràcies!)
 
 - Wrap RackAttack IP related parsing into IpParser.
 - Allow to extend Rack::Request.ip_filter regex used internally by Rack::Request.trusted_proxy?(ip).
