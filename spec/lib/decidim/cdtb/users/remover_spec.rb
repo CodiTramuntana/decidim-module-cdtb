@@ -40,4 +40,28 @@ RSpec.describe Decidim::Cdtb::Users::Remover do
       expect(Decidim::ActionLog.where(decidim_user_id: target_user.id)).to be_empty
     end
   end
+
+  describe "#manage_comments" do
+    let!(:orphaned_comment) do
+      resource = create(:dummy_resource, :published, component: create(:dummy_component, organization:))
+      comment = create(:comment, author: target_user, commentable: resource, root_commentable: resource)
+      comment.update_columns(decidim_participatory_space_id: nil, decidim_participatory_space_type: nil)
+      resource.delete # simulates the root commentable (and its participatory space) having been removed
+      comment.reload
+    end
+
+    it "skips comments without a participatory space instead of raising" do
+      expect(Decidim::CreateReport).not_to receive(:call)
+      expect(Decidim::Admin::HideResource).not_to receive(:call)
+
+      expect do
+        subject.send(
+          :manage_comments,
+          Decidim::Comments::Comment.where(id: orphaned_comment.id),
+          target_user,
+          reporter_user
+        )
+      end.not_to raise_error
+    end
+  end
 end

@@ -1,5 +1,10 @@
 ## [Unreleased]
 
+## [0.6.1] - 2026-08-27 (patch)
+
+- Fix `ArgumentError` in Users::Remover task: `Decidim::CreateReport.call` only takes `(form, reportable)`, drop the extra `reporter_user` argument.
+- Skip orphaned comments (with no `participatory_space`, e.g. their commentable has been removed) when reporting/hiding them in Users::Remover task, instead of aborting the whole task.
+
 ## [0.6.0] - 2026-08-25 (minor)
 
 - Adapt `Decidim::DestroyAccount` call in Users::Remover task: pass a single form with `current_user` in context instead of `(user, form)`.

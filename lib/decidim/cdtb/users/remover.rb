@@ -67,9 +67,21 @@ module Decidim
 
         def manage_comments(comments, user, reporter_user)
           comments.find_each do |comment|
+            next unless orphaned_comment_skip_check(comment)
+
             report_comment(comment, user, reporter_user) unless comment.reported?
             hide_comment(comment, user, reporter_user) unless comment.hidden?
           end
+        end
+
+        # Comments whose commentable (or its participatory space) has been removed
+        # have no `participatory_space`, which makes `Decidim::CreateReport` blow up
+        # (Moderation requires a participatory_space) and would abort the whole batch.
+        def orphaned_comment_skip_check(comment)
+          return true if comment.participatory_space.present?
+
+          puts "SKIP: Comment #{comment.id} of User #{comment.decidim_author_id} has no participatory space (orphaned)"
+          false
         end
 
         def block_user(user, reporter_user)
@@ -117,15 +129,14 @@ module Decidim
         end
 
         def report_comment(comment, user, reporter_user)
-          params = {
-            reason: "spam",
-            details: "Spam message"
-          }
-
-          form = Decidim::ReportForm.from_params(params).with_context(context_for_report(user, comment, reporter_user))
+          form = report_form_for(comment, user, reporter_user)
           reportable = GlobalID::Locator.locate_signed(comment.to_sgid.to_s)
 
-          Decidim::CreateReport.call(form, reportable, reporter_user) do
+          create_report(form, reportable, comment, user)
+        end
+
+        def create_report(form, reportable, comment, user)
+          Decidim::CreateReport.call(form, reportable) do
             on(:ok) do
               puts "OK: Comment #{comment.id} of User #{user.id} reported"
             end
@@ -134,6 +145,17 @@ module Decidim
               puts "ERROR: Comment #{comment.id} of User #{user.id} not reported"
             end
           end
+        rescue ActiveRecord::RecordInvalid => e
+          puts "ERROR: Comment #{comment.id} of User #{user.id} not reported (#{e.message})"
+        end
+
+        def report_form_for(comment, user, reporter_user)
+          params = {
+            reason: "spam",
+            details: "Spam message"
+          }
+
+          Decidim::ReportForm.from_params(params).with_context(context_for_report(user, comment, reporter_user))
         end
 
         def hide_comment(comment, user, reporter_user)
