@@ -164,6 +164,22 @@ To execute the task run:
 bundle exec rake cdtb:users:remove[spam_users.csv,reporter_user@example.org]
 ```
 
+### Comments
+
+Tasks related with comments.
+
+#### Remove orphaned comments
+
+Removes `Decidim::Comments::Comment`'s whose participatory space can no longer be resolved: this happens when their root commentable (e.g. a proposal or a meeting) and/or its participatory space has been removed without cascading its comments. Trying to report or hide these comments raises `ActiveRecord::RecordInvalid` (a `Decidim::Moderation` requires a `participatory_space`), which is the same condition `cdtb:users:remove` skips.
+
+The task also removes the comment's votes, search index entries and any moderation/report referencing it.
+
+To execute the task run:
+
+```
+bin/rake cdtb:comments:remove_orphaned
+```
+
 ### Participatory Spaces
 
 #### Add content blocks 

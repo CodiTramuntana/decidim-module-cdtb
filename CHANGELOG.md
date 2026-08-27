@@ -4,6 +4,7 @@
 
 - Fix `ArgumentError` in Users::Remover task: `Decidim::CreateReport.call` only takes `(form, reportable)`, drop the extra `reporter_user` argument.
 - Skip orphaned comments (with no `participatory_space`, e.g. their commentable has been removed) when reporting/hiding them in Users::Remover task, instead of aborting the whole task.
+- Add `cdtb:comments:remove_orphaned` task to remove orphaned comments (and their votes, search index entries and moderations).
 
 ## [0.6.0] - 2026-08-25 (minor)
 
