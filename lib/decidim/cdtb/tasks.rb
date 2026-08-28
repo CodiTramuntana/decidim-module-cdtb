@@ -2,6 +2,7 @@
 
 require "decidim/cdtb/tasks_utils"
 require "decidim/cdtb/task"
+require "decidim/cdtb/comments/orphaned_remover"
 require "decidim/cdtb/fixes/nickname_fixer"
 require "decidim/cdtb/fixes/you_tube_embeds_fixer"
 require "decidim/cdtb/users/remover"
