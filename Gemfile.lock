@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/CodiTramuntana/decidim.git
-  revision: 6c2e53561a9700ad76d0da64f023e6c0690f41ad
+  revision: 67e68f735337b9c7fb98de058362e3b457d24c7a
   branch: release/0.29-stable
   specs:
     decidim (0.29.7)
@@ -660,7 +660,7 @@ GEM
       io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
-    responders (3.2.0)
+    responders (3.2.1)
       actionpack (>= 7.0)
       railties (>= 7.0)
     rexml (3.4.4)

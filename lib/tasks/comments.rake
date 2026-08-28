@@ -10,8 +10,8 @@ namespace :cdtb do
       participatory space has been removed).
     EODESC
     task remove_orphaned: [:environment] do
-      service = Decidim::Cdtb::Comments::OrphanedRemover.new
-      service.execute!
+      task = Decidim::Cdtb::Comments::OrphanedRemover.new
+      task.execute!
     end
   end
 end
