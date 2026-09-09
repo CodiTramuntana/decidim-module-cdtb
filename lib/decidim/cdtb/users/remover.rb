@@ -105,11 +105,11 @@ module Decidim
         end
 
         def create_user_block(user, reporter_user, justification)
-          Decidim::UserModeration.find_or_create_by!(user: user)
+          Decidim::UserModeration.find_or_create_by!(user:)
 
           Decidim::UserBlock.create!(
-            justification: justification,
-            user: user,
+            justification:,
+            user:,
             blocking_user: reporter_user
           )
         end
@@ -127,12 +127,14 @@ module Decidim
               title: user.name
             }
           ) do
-            user.blocked = true
-            user.blocked_at = Time.current
-            user.block_id = user_block.id
-            user.extended_data = (user.extended_data || {}).merge("user_name" => user.name)
-            user.name = "Blocked user"
-            user.notifications_sending_frequency = "none"
+            user.assign_attributes(
+              blocked: true,
+              blocked_at: Time.current,
+              block_id: user_block.id,
+              extended_data: user.extended_data.to_h.merge("user_name" => user.name),
+              name: "Blocked user",
+              notifications_sending_frequency: "none"
+            )
             user.save!
           end
         end
