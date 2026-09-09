@@ -41,6 +41,14 @@ RSpec.describe Decidim::Cdtb::Users::Remover do
     end
   end
 
+  describe "#block_user" do
+    it "does not enqueue the block notification email" do
+      expect do
+        subject.send(:block_user, target_user, reporter_user)
+      end.not_to have_enqueued_mail(Decidim::BlockUserMailer)
+    end
+  end
+
   describe "#manage_comments" do
     let!(:orphaned_comment) do
       resource = create(:dummy_resource, :published, component: create(:dummy_component, organization:))

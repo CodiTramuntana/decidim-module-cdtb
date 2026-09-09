@@ -85,28 +85,55 @@ module Decidim
         end
 
         def block_user(user, reporter_user)
-          params = {
-            user_id: user.id,
-            justification: "Confirmed spam suspicious"
-          }
+          justification = "Confirmed spam suspicious"
 
-          form = Decidim::Admin::BlockUserForm.from_params(params).with_context(
-            {
-              current_organization: user.organization,
-              current_user: reporter_user
-            }
+          return skip_blocked_user(user) if user.blocked?
+
+          user_block = create_user_block(user, reporter_user, justification)
+          apply_block_to_user(user, user_block, reporter_user, justification)
+
+          puts "OK: User #{user.id} blocked"
+          true
+        rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+          puts "ERROR: User #{user.id} not blocked (#{e.message})"
+          false
+        end
+
+        def skip_blocked_user(user)
+          puts "SKIP: User #{user.id} already blocked"
+          false
+        end
+
+        def create_user_block(user, reporter_user, justification)
+          Decidim::UserModeration.find_or_create_by!(user: user)
+
+          Decidim::UserBlock.create!(
+            justification: justification,
+            user: user,
+            blocking_user: reporter_user
           )
+        end
 
-          Decidim::Admin::BlockUser.call(form) do
-            on(:ok) do
-              puts "OK: User #{user.id} blocked"
-              return true
-            end
-
-            on(:invalid) do
-              puts "ERROR: User #{user.id} not blocked"
-              return false
-            end
+        def apply_block_to_user(user, user_block, reporter_user, justification)
+          Decidim.traceability.perform_action!(
+            "block",
+            user,
+            reporter_user,
+            extra: {
+              reportable_type: user.class.name,
+              current_justification: justification
+            },
+            resource: {
+              title: user.name
+            }
+          ) do
+            user.blocked = true
+            user.blocked_at = Time.current
+            user.block_id = user_block.id
+            user.extended_data = (user.extended_data || {}).merge("user_name" => user.name)
+            user.name = "Blocked user"
+            user.notifications_sending_frequency = "none"
+            user.save!
           end
         end
 
