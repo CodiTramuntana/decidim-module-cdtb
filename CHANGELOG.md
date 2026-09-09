@@ -1,4 +1,6 @@
-## [Unreleased]
+## [0.6.2]
+
+- Prevent `cdtb:users:remove` from enqueueing the admin block notification email by blocking users locally while preserving auditability and moderation records.
 
 ## [0.6.1] - 2026-08-27 (patch)
 
