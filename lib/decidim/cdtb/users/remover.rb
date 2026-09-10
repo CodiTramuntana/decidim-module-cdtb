@@ -145,9 +145,11 @@ module Decidim
           }
 
           form = Decidim::DeleteAccountForm.from_params(params).with_context(current_user: user)
+          removed_users = 0
 
           Decidim::DestroyAccount.call(form) do
             on(:ok) do
+              removed_users += 1
               puts "OK: User #{user.id} removed"
             end
 
@@ -155,6 +157,8 @@ module Decidim
               puts "ERROR: User #{user.id} not removed"
             end
           end
+
+          @num_applied += removed_users
         end
 
         def report_comment(comment, user, reporter_user)
