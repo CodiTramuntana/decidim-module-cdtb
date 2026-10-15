@@ -50,6 +50,13 @@ RSpec.describe Cdtb::IpParser do
           Cdtb::IpParser.decorate_rack_request
           expect(Rack::Request.new(request_env).ip).to eq("10.20.30.1")
         end
+
+        it "can be applied more than once" do
+          expect do
+            2.times { Cdtb::IpParser.decorate_rack_request }
+          end.not_to raise_error
+          expect(Rack::Request.new(request_env).ip).to eq("10.20.30.1")
+        end
       end
     end
   end

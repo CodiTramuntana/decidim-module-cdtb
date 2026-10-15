@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "cdtb/ip_parser"
+require "csv"
+require "ipaddr"
 
 unless ENV["CDTB_RACK_ATTACK_DISABLED"].to_i.positive? || %w[development test].include?(Rails.env)
   require "rack/attack"
@@ -36,14 +38,38 @@ unless ENV["CDTB_RACK_ATTACK_DISABLED"].to_i.positive? || %w[development test].i
   end
 
   Rack::Attack.blocklist("cdtb:block all PHP RQs") do |request|
-    request.path.end_with?("*.php")
+    request.path.end_with?(".php")
+  end
+
+  ABUSE_REPORTED_IPS_CSV_PATH= ENV.fetch("ABUSE_REPORTED_IPS_CSV_PATH", nil)
+  if ABUSE_REPORTED_IPS_CSV_PATH.present? && File.exist?(ABUSE_REPORTED_IPS_CSV_PATH)
+    ABUSE_REPORTED_IPS_CACHE_KEY= ["cdtb", "reported_ips", ABUSE_REPORTED_IPS_CSV_PATH].freeze
+    Rack::Attack.blocklist("block IPs in reported website") do |request|
+      ip= Cdtb::IpParser.extract_ip(request)
+
+      reported_ips = Rails.cache.fetch(ABUSE_REPORTED_IPS_CACHE_KEY, expires_in: 1.hour) do
+        if ABUSE_REPORTED_IPS_CSV_PATH.present? && File.exist?(ABUSE_REPORTED_IPS_CSV_PATH)
+          CSV.read(ABUSE_REPORTED_IPS_CSV_PATH).flatten.compact.map(&:strip).reject(&:blank?)
+        else
+          []
+        end
+      end
+
+      reported_ips.any? { |reported_ip| ip.start_with?(reported_ip) }
+    end
   end
 
   if ENV["RACK_ATTACK_BLOCKED_IPS"].present?
-    blocked_ips_and_subnets= ENV["RACK_ATTACK_BLOCKED_IPS"].split(",")
+    blocked_ips_and_subnets= ENV["RACK_ATTACK_BLOCKED_IPS"].split(",").filter_map do |ip_or_subnet|
+      IPAddr.new(ip_or_subnet.strip)
+    rescue IPAddr::InvalidAddressError
+      nil
+    end
     Rack::Attack.blocklist("cdtb:block all unaccepted IPs") do |request|
-      ip= Cdtb::IpParser.extract_ip(request)
-      blocked_ips_and_subnets.any? { |ip_or_subnet| ip.start_with?(ip_or_subnet) }
+      request_ip= IPAddr.new(Cdtb::IpParser.extract_ip(request))
+      blocked_ips_and_subnets.any? { |ip_or_subnet| ip_or_subnet.include?(request_ip) }
+    rescue IPAddr::InvalidAddressError
+      false
     end
   end
 end

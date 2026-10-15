@@ -1,3 +1,8 @@
+## [0.6.3] - 2026-10-16 (minor)
+
+- Implement RackAttack feature to block abuse reported IPs.
+- Improve RackAttack tests and compatibility with subnets.
+
 ## [0.6.2] - 2026-09-10 (minor)
 
 - Prevent `cdtb:users:remove` from enqueueing the admin block notification email when blocking users while preserving auditability and moderation records.
