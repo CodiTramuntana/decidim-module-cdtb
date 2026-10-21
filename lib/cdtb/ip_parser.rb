@@ -4,6 +4,8 @@ module Cdtb
   # Parses IPs from Rack::Request objects, discarding the port.
   module IpParser
     def self.decorate_rack_request
+      return if Rack::Request.ancestors.include?(Cdtb::IpParser)
+
       Rack::Request.class_eval do
         include Cdtb::IpParser
 
