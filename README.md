@@ -303,6 +303,24 @@ See the [Installation](#installation) chapter to install a GitHub Action on your
 
 TO-DO also check that all migrations have been executed and the schema.rb does not change
 
+#### Back up and restore hero content block settings
+
+When upgrading to Decidim v0.31, the `MoveCtaToHeroContentBlock` migration overwrites the settings of the hero content blocks with the CTA values, losing every other setting.
+
+Before upgrading (before running the migrations), export the raw settings of every hero content block to a new JSON file (the export will not overwrite an existing file):
+
+```
+bin/rake 'cdtb:upgrades:hero_content_block_settings:export[/secure/path/hero-settings.json]'
+```
+
+Keep the file securely outside the application repository. After upgrading, restore the missing keys with:
+
+```
+bin/rake 'cdtb:upgrades:hero_content_block_settings:restore[/secure/path/hero-settings.json]'
+```
+
+The restore uses the original content block and organization IDs and scope, so run it against the same database. It preserves any current setting, including the migrated CTA values, and only adds keys absent from the current settings. All records are restored in one transaction; a missing or mismatched block or an invalid backup aborts the restore. A backup from before the affected migration is required to recover settings that were lost.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

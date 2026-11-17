@@ -1,3 +1,7 @@
+## [0.6.4] - 2026-11-17 (minor)
+
+- Add `cdtb:upgrades:hero_content_block_settings:export` and `cdtb:upgrades:hero_content_block_settings:restore` tasks to back up hero content block settings before upgrading to Decidim v0.31 and restore the ones lost by the CTA migration.
+
 ## [0.6.3] - 2026-10-16 (minor)
 
 - Implement RackAttack feature to block abuse reported IPs.
