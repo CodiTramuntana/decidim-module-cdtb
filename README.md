@@ -319,7 +319,7 @@ Keep the file securely outside the application repository. After upgrading, rest
 bin/rake 'cdtb:upgrades:hero_content_block_settings:restore[/secure/path/hero-settings.json]'
 ```
 
-The restore uses the original content block and organization IDs and scope, so run it against the same database. It preserves any current setting, including the migrated CTA values, and only adds keys absent from the current settings. All records are restored in one transaction; a missing or mismatched block or an invalid backup aborts the restore. A backup from before the affected migration is required to recover settings that were lost.
+The restore uses the original content block and organization IDs and scope, so run it against the same database. It preserves any current setting, including the migrated CTA values, and only adds keys absent from the current settings. Each block is restored in its own transaction; a missing or mismatched block is reported and skipped, and the restore continues with the rest. An invalid backup aborts the restore. A backup from before the affected migration is required to recover settings that were lost.
 
 ## Development
 

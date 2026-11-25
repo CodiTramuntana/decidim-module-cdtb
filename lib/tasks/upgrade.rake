@@ -37,7 +37,7 @@ namespace :cdtb do
         raise ArgumentError, "Provide a JSON file path" if args.path.blank?
 
         count = Decidim::Cdtb::Upgrades::HeroContentBlockSettings.restore(args.path)
-        puts "Processed #{count} hero content blocks from #{args.path}"
+        puts "Successfully processed #{count} hero content blocks from #{args.path}"
       end
     end
   end

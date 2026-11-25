@@ -33,17 +33,21 @@ module Decidim
 
         # Restores the keys missing from the current settings of each hero content block.
         # Current values (including the migrated CTA values) are always preserved.
-        # Everything is restored in one transaction: any invalid record aborts the restore.
+        # Each block is restored in its own transaction: a failing block is reported and
+        # the restore continues with the rest. An invalid backup aborts the whole restore.
         #
-        # Returns the number of processed content blocks.
+        # Returns the number of successfully processed content blocks.
         def self.restore(path)
           backup = JSON.parse(File.read(path))
           records = validate_backup!(backup)
 
-          Decidim::ContentBlock.transaction do
-            records.each { |record| restore_record!(record) }
+          records.count do |record|
+            Decidim::ContentBlock.transaction { restore_record!(record) }
+            true
+          rescue StandardError => e
+            puts "Block [#{record["id"]}] failed due to: #{e.message} - #{e.backtrace&.first(5)&.join("\n")}"
+            false
           end
-          records.size
         end
 
         def self.restore_record!(record)

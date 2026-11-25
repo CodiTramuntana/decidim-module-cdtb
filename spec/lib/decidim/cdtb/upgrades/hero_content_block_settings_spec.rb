@@ -57,15 +57,20 @@ RSpec.describe Decidim::Cdtb::Upgrades::HeroContentBlockSettings do
     end
 
     context "when a content block in the backup does not exist" do
+      let(:missing_id) { hero.id + 1000 }
+
       before do
         data = JSON.parse(File.read(path))
-        data["content_blocks"] << data["content_blocks"].first.merge("id" => hero.id + 1000)
+        data["content_blocks"].unshift(data["content_blocks"].first.merge("id" => missing_id))
         File.write(path, JSON.generate(data))
       end
 
-      it "aborts the whole restore" do
-        expect { described_class.restore(path) }.to raise_error(ActiveRecord::RecordNotFound)
-        expect(hero.reload[:settings]).to eq("cta_button_text_en" => "New CTA")
+      it "reports the failure and restores the rest of the blocks" do
+        result = nil
+        expect { result = described_class.restore(path) }.to output(/Block \[#{missing_id}\] failed/).to_stdout
+
+        expect(result).to eq(1)
+        expect(hero.reload[:settings]).to eq("welcome_text_en" => "Hello", "cta_button_text_en" => "New CTA")
       end
     end
 
